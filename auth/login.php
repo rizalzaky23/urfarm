@@ -2,6 +2,16 @@
 session_start();
 require_once '../config/connection.php';
 
+// Jika sudah login, redirect sesuai role
+if (isset($_SESSION['user_id'])) {
+    if ($_SESSION['user_role'] === 'admin') {
+        header('Location: ../admin/dashboard.php');
+    } else {
+        header('Location: ../landing.php');
+    }
+    exit;
+}
+
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -25,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($user['role'] === 'admin') {
                 header('Location: ../admin/dashboard.php');
             } else {
-                header('Location: ../index.php'); // donatur redirect
+                header('Location: ../landing.php'); // donatur redirect ke landing page
             }
             exit;
         } else {
