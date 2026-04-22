@@ -1,4 +1,7 @@
-<?php session_start(); ?>
+<?php
+session_start();
+$page = $_GET['page'] ?? 'home';
+?>
 <!DOCTYPE html>
 <html lang="id">
 
