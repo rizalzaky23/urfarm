@@ -45,7 +45,7 @@ html, body { background: transparent; }
     font-weight: 700;
     color: white;
 }
-.auth-logo-bar .logo-text span { color: var(--green-light); }
+.auth-logo-bar .logo-text span { color: #52b788; }
 
 /* Tabs (login only) */
 .auth-tabs {
@@ -66,7 +66,7 @@ html, body { background: transparent; }
 }
 .auth-tab-btn.active {
     background: white;
-    color: var(--green-dark);
+    color: #1a4a35;
 }
 
 .auth-body { padding: 36px 40px 40px; }
@@ -75,12 +75,12 @@ html, body { background: transparent; }
     font-family: 'Sora', sans-serif;
     font-size: 26px;
     font-weight: 700;
-    color: var(--green-dark);
+    color: #1a4a35;
     margin-bottom: 6px;
 }
 .auth-subheading {
     font-size: 13px;
-    color: var(--gray-400);
+    color: #8a9e94;
     margin-bottom: 28px;
     line-height: 1.6;
 }
@@ -89,24 +89,24 @@ html, body { background: transparent; }
     display: block;
     font-size: 13px;
     font-weight: 600;
-    color: var(--gray-700);
+    color: #3d4f47;
     margin-bottom: 6px;
 }
 .field-input {
     width: 100%;
     padding: 12px 16px;
-    border: 1.5px solid var(--gray-100);
+    border: 1.5px solid #eef2f0;
     border-radius: 8px;
     font-family: inherit;
     font-size: 14px;
-    color: var(--text);
-    background: var(--gray-50);
+    color: #1c2b23;
+    background: #f7faf8;
     margin-bottom: 16px;
     transition: border-color 0.2s;
 }
 .field-input:focus {
     outline: none;
-    border-color: var(--green-light);
+    border-color: #52b788;
     background: white;
 }
 
@@ -114,7 +114,7 @@ html, body { background: transparent; }
     width: 100%;
     padding: 14px;
     border-radius: 10px;
-    background: var(--green-dark);
+    background: #1a4a35;
     color: white;
     font-size: 15px;
     font-weight: 700;
@@ -123,7 +123,7 @@ html, body { background: transparent; }
     transition: background 0.2s;
     font-family: inherit;
 }
-.btn-auth:hover { background: var(--green-main); }
+.btn-auth:hover { background: #2d6a4f; }
 
 .auth-alert {
     border-radius: 8px;
@@ -146,10 +146,10 @@ html, body { background: transparent; }
     text-align: center;
     margin-top: 20px;
     font-size: 13px;
-    color: var(--gray-400);
+    color: #8a9e94;
 }
 .auth-footer-link a {
-    color: var(--green-main);
+    color: #2d6a4f;
     font-weight: 600;
     text-decoration: none;
 }

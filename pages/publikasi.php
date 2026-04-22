@@ -4,13 +4,15 @@ $page = $_GET['page'] ?? 'home';
 ?>
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Publikasi — UrFarm</title>
-    <link rel="stylesheet" href="css/publikasi.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="../css/publikasi.css">
+    <link rel="stylesheet" href="../css/style.css">
 </head>
+
 <body>
 
     <nav id="navbar">
@@ -33,7 +35,7 @@ $page = $_GET['page'] ?? 'home';
                     <a href="#">👤 <?= htmlspecialchars($_SESSION['user_nama']) ?> ▾</a>
                     <div class="dropdown-menu">
                         <?php if ($_SESSION['user_role'] === 'admin'): ?>
-                        <a href="admin/dashboard.php">Dashboard</a>
+                            <a href="admin/dashboard.php">Dashboard</a>
                         <?php endif; ?>
                         <a href="auth/logout.php">Keluar</a>
                     </div>
@@ -50,7 +52,8 @@ $page = $_GET['page'] ?? 'home';
         <div class="pub-hero-content">
             <span class="pub-hero-badge">KABAR TERBARU</span>
             <h1 class="pub-hero-title">Publikasi UrFarm</h1>
-            <p class="pub-hero-sub">Ikuti perkembangan program penanaman dan dampak positif yang telah kami ciptakan bersama</p>
+            <p class="pub-hero-sub">Ikuti perkembangan program penanaman dan dampak positif yang telah kami ciptakan
+                bersama</p>
         </div>
     </section>
 
@@ -62,8 +65,11 @@ $page = $_GET['page'] ?? 'home';
                 </div>
                 <div class="highlight-body">
                     <span class="badge-gold">HIGHLIGHT UTAMA</span>
-                    <h2 class="highlight-title">UrFarm &amp; GreenCo Berhasil Menanam 500 Pohon Mangrove di Pesisir Sungai Code, Yogyakarta</h2>
-                    <p class="highlight-desc">Program konservasi mangrove terbesar yang pernah dilakukan di kawasan perkotaan Yogyakarta. Sebanyak 500 bibit mangrove jenis Rhizophora berhasil ditanam dengan partisipasi lebih dari 200 relawan dan donatur.</p>
+                    <h2 class="highlight-title">UrFarm &amp; GreenCo Berhasil Menanam 500 Pohon Mangrove di Pesisir
+                        Sungai Code, Yogyakarta</h2>
+                    <p class="highlight-desc">Program konservasi mangrove terbesar yang pernah dilakukan di kawasan
+                        perkotaan Yogyakarta. Sebanyak 500 bibit mangrove jenis Rhizophora berhasil ditanam dengan
+                        partisipasi lebih dari 200 relawan dan donatur.</p>
                     <div class="highlight-meta">
                         <span class="meta-info">01 April 2024</span>
                         <span class="meta-info">Tim UrFarm</span>
@@ -80,12 +86,14 @@ $page = $_GET['page'] ?? 'home';
 
                 <div class="artikel-card">
                     <div class="artikel-img">
-                        <img src="assets/img2.jpeg" alt="pohon">
+                        <img src="../assets/img2.jpeg" alt="pohon">
                     </div>
                     <div class="artikel-body">
                         <span class="artikel-date">25 Mar 2024</span>
-                        <h3 class="artikel-title">Kolaborasi UrFarm dengan 5 Perusahaan untuk Tanam 1.000 Pohon Jati di Gunungkidul</h3>
-                        <p class="artikel-desc">Kerja sama strategis antara UrFarm dan lima perusahaan besar berhasil menggerakkan program penanaman massal...</p>
+                        <h3 class="artikel-title">Kolaborasi UrFarm dengan 5 Perusahaan untuk Tanam 1.000 Pohon Jati di
+                            Gunungkidul</h3>
+                        <p class="artikel-desc">Kerja sama strategis antara UrFarm dan lima perusahaan besar berhasil
+                            menggerakkan program penanaman massal...</p>
                         <div class="artikel-footer">
                             <span class="artikel-author">Tim Media &amp; Publikasi UrFarm</span>
                             <a href="#" class="link-baca">Baca →</a>
@@ -95,12 +103,14 @@ $page = $_GET['page'] ?? 'home';
 
                 <div class="artikel-card">
                     <div class="artikel-img">
-                        <img src="assets/img7.jpg" alt="bambu">
+                        <img src="../assets/img7.jpg" alt="bambu">
                     </div>
                     <div class="artikel-body">
                         <span class="artikel-date">14 Mar 2024</span>
-                        <h3 class="artikel-title">Program Benih Bambu: Solusi Hijau untuk Lahan Kritis di Lereng Merapi</h3>
-                        <p class="artikel-desc">Bambu dipilih sebagai tanaman prioritas karena kemampuannya menyerap karbon dioksida 35% lebih efisien...</p>
+                        <h3 class="artikel-title">Program Benih Bambu: Solusi Hijau untuk Lahan Kritis di Lereng Merapi
+                        </h3>
+                        <p class="artikel-desc">Bambu dipilih sebagai tanaman prioritas karena kemampuannya menyerap
+                            karbon dioksida 35% lebih efisien...</p>
                         <div class="artikel-footer">
                             <span class="artikel-author">Tim Riset</span>
                             <a href="#" class="link-baca">Baca →</a>
@@ -110,12 +120,14 @@ $page = $_GET['page'] ?? 'home';
 
                 <div class="artikel-card">
                     <div class="artikel-img">
-                        <img src="assets/img8.png" alt="Peta">
+                        <img src="../assets/img8.png" alt="Peta">
                     </div>
                     <div class="artikel-body">
                         <span class="artikel-date">10 Mar 2024</span>
-                        <h3 class="artikel-title">Donatur UrFarm Kini Bisa Lacak Bibit Mereka Secara Real-Time di Peta</h3>
-                        <p class="artikel-desc">Fitur terbaru UrFarm memungkinkan setiap donatur melacak posisi tepat bibit yang telah mereka donasikan...</p>
+                        <h3 class="artikel-title">Donatur UrFarm Kini Bisa Lacak Bibit Mereka Secara Real-Time di Peta
+                        </h3>
+                        <p class="artikel-desc">Fitur terbaru UrFarm memungkinkan setiap donatur melacak posisi tepat
+                            bibit yang telah mereka donasikan...</p>
                         <div class="artikel-footer">
                             <span class="artikel-author">Tim Produk</span>
                             <a href="#" class="link-baca">Baca →</a>
@@ -141,4 +153,5 @@ $page = $_GET['page'] ?? 'home';
     </script>
 
 </body>
+
 </html>
