@@ -23,12 +23,12 @@ $page = $_GET['page'] ?? 'home';
         <div class="nav-links" id="navLinks">
             <a href="?page=home" <?= $page == 'home' ? 'class="active"' : '' ?>>Home</a>
             <a href="?page=program" <?= $page == 'program' ? 'class="active"' : '' ?>>Program</a>
-            <a href="?page=partner" <?= $page == 'partner' ? 'class="active"' : '' ?>>Partner</a>
-            <a href="/pages/publikasi.php" <?= $page == 'publikasi' ? 'class="active"' : '' ?>>Publikasi</a>
+            <a href="pages/partner.php" <?= $page == 'partner' ? 'class="active"' : '' ?>>Partner</a>
+            <a href="pages/publikasi.php" <?= $page == 'publikasi' ? 'class="active"' : '' ?>>Publikasi</a>
             <div class="dropdown">
                 <a href="#">Tentang ▾</a>
                 <div class="dropdown-menu">
-                    <a href="?page=about">Tentang Kami</a>
+                    <a href="pages/about/tentang.php">Tentang Kami</a>
                     <a href="?page=contact">Hubungi Kami</a>
                     <a href="?page=faq">FAQ</a>
                 </div>

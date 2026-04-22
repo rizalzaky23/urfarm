@@ -29,12 +29,12 @@ if (!isset($_SESSION['user_id'])) {
         <div class="nav-links" id="navLinks">
             <a href="landing.php" class="active">Home</a>
             <a href="#">Program</a>
-            <a href="#">Partner</a>
-            <a href="#">Publikasi</a>
+            <a href="pages/partner.php">Partner</a>
+            <a href="pages/publikasi.php">Publikasi</a>
             <div class="dropdown">
                 <a href="#">Tentang ▾</a>
                 <div class="dropdown-menu">
-                    <a href="#">Tentang Kami</a>
+                    <a href="pages/about/tentang.php">Tentang Kami</a>
                     <a href="#">Hubungi Kami</a>
                     <a href="#">FAQ</a>
                 </div>
@@ -248,7 +248,7 @@ if (!isset($_SESSION['user_id'])) {
                     <a href="landing.php">Home</a>
                     <a href="#">Program</a>
                     <a href="#">Partner</a>
-                    <a href="#">Publikasi</a>
+                    <a href="pages/publikasi.php">Publikasi</a>
                 </div>
             </div>
             <div>
