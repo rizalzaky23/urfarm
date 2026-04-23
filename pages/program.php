@@ -1,4 +1,7 @@
-<?php ?>
+<?php
+session_start();
+$page = $_GET['page'] ?? 'home';
+?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -7,32 +10,45 @@
     <title>Program UrFarm</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/program.css" rel="stylesheet">
+    
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg sticky-top">
-    <div class="container-fluid px-5">
-        <a class="navbar-brand" href="#">
-            <div class="navbar-logo-icon"></div>
-            <span class="navbar-logo-text">UrFarm</span>
-        </a>
-        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navMain">
-            <ul class="navbar-nav ms-auto align-items-center">
-                <li class="nav-item"><a class="nav-link" href="../landing.php">Home</a></li>
-                <li class="nav-item"><a class="nav-link active" href="program.php">Program</a></li>
-                <li class="nav-item"><a class="nav-link" href="partner.php">Partner</a></li>
-                <li class="nav-item"><a class="nav-link" href="publikasi.php">Publikasi</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Bantuan &#9662;</a></li>
-                <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
-                    <a class="nav-link btn-masuk" href="../auth/login.php">Masuk</a>
-                </li>
-            </ul>
+<!-- NAVBAR -->
+    <nav id="navbar">
+        <div class="nav-brand">
+    <div class="navbar-logo-icon"></div>
+    <a href="?page=home" class="nav-logo">Ur<span>Farm</span></a>
+</div>
+        <div class="nav-links" id="navLinks">
+            <a href="?page=home" <?= $page == 'home' ? 'class="active"' : '' ?>>Home</a>
+            <a href="program.php" <?= $page == 'program' ? 'class="active"' : '' ?>>Program</a>
+            <a href="partner.php" <?= $page == 'partner' ? 'class="active"' : '' ?>>Partner</a>
+            <a href="publikasi.php" <?= $page == 'publikasi' ? 'class="active"' : '' ?>>Publikasi</a>
+            <div class="dropdown">
+                <a href="#">Tentang ▾</a>
+                <div class="dropdown-menu">
+                    <a href="about/tentang.php">Tentang Kami</a>
+                    <a href="?page=contact">Hubungi Kami</a>
+                    <a href="about/faq.php">FAQ</a>
+                </div>
+            </div>
+            <?php if (isset($_SESSION['user_id'])): ?>
+                <div class="dropdown">
+                    <a href="#">👤 <?= htmlspecialchars($_SESSION['user_nama']) ?> ▾</a>
+                    <div class="dropdown-menu">
+                        <?php if ($_SESSION['user_role'] === 'admin'): ?>
+                        <a href="admin/dashboard.php">Dashboard</a>
+                        <?php endif; ?>
+                        <a href="../auth/login.php" class="btn-masuk">Masuk</a>
+                    </div>
+                </div>
+            <?php else: ?>
+                <a href="../auth/login.php" class="btn-masuk">Masuk</a>
+            <?php endif; ?>
         </div>
-    </div>
-</nav>
+        <button class="menu-toggle" id="menuToggle">☰</button>
+    </nav>
 
 <section class="hero-section">
     <div class="hero-bg" style="background-image: url('../assets/bg4.png');"></div>

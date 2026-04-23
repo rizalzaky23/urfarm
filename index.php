@@ -19,10 +19,13 @@ $page = $_GET['page'] ?? 'home';
 
     <!-- NAVBAR -->
     <nav id="navbar">
-        <a href="?page=home" class="nav-logo">Ur<span>Farm</span></a>
+        <div class="nav-brand">
+    <div class="navbar-logo-icon"></div>
+    <a href="?page=home" class="nav-logo">Ur<span>Farm</span></a>
+</div>
         <div class="nav-links" id="navLinks">
             <a href="?page=home" <?= $page == 'home' ? 'class="active"' : '' ?>>Home</a>
-            <a href="?page=program" <?= $page == 'program' ? 'class="active"' : '' ?>>Program</a>
+            <a href="pages/program.php" <?= $page == 'program' ? 'class="active"' : '' ?>>Program</a>
             <a href="pages/partner.php" <?= $page == 'partner' ? 'class="active"' : '' ?>>Partner</a>
             <a href="pages/publikasi.php" <?= $page == 'publikasi' ? 'class="active"' : '' ?>>Publikasi</a>
             <div class="dropdown">
@@ -30,7 +33,7 @@ $page = $_GET['page'] ?? 'home';
                 <div class="dropdown-menu">
                     <a href="pages/about/tentang.php">Tentang Kami</a>
                     <a href="?page=contact">Hubungi Kami</a>
-                    <a href="?page=faq">FAQ</a>
+                    <a href="pages/about/faq.php">FAQ</a>
                 </div>
             </div>
             <?php if (isset($_SESSION['user_id'])): ?>
