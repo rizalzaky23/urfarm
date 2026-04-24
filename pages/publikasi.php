@@ -41,7 +41,7 @@ $highlight = !empty($publikasi) ? array_shift($publikasi) : null;
                 <a href="#">Tentang ▾</a>
                 <div class="dropdown-menu">
                     <a href="about/tentang.php">Tentang Kami</a>
-                    <a href="../index.php?page=contact">Hubungi Kami</a>
+                    <a href="about/contact.php">Hubungi Kami</a>
                     <a href="../index.php?page=faq">FAQ</a>
                 </div>
             </div>

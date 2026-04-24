@@ -1,0 +1,156 @@
+body {
+    background: #f0f4f2;
+}
+
+.contact-page-wrap {
+    min-height: calc(100vh - 150px);
+    padding: 140px 48px 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.contact-container {
+    display: flex;
+    gap: 30px;
+    width: 100%;
+    max-width: 1100px;
+}
+
+/* Base style for badges */
+.badge-title {
+    background: #eab755; /* Yellow from mockup */
+    color: #1e2d27;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 1px;
+    padding: 8px 24px;
+    border-radius: 20px;
+    position: absolute;
+    top: -18px;
+    left: 40px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Left Card */
+.contact-info-card {
+    background: #1e4631; /* Dark green from mockup */
+    border-radius: 16px;
+    padding: 60px 40px 40px;
+    position: relative;
+    width: 400px;
+    flex-shrink: 0;
+    color: white;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    font-size: 15px;
+}
+.info-row:last-child {
+    margin-bottom: 0;
+}
+
+.info-label {
+    color: #d1dcd5;
+    flex-shrink: 0;
+}
+
+.info-value {
+    color: white;
+    font-weight: 500;
+    text-align: right;
+}
+.info-value a {
+    color: white;
+    text-decoration: none;
+}
+.info-value a:hover {
+    text-decoration: underline;
+}
+
+/* Right Card */
+.contact-form-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 60px 40px 40px;
+    position: relative;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 12px 48px rgba(26,74,53,0.04);
+}
+
+.contact-form-card form {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 250px;
+}
+
+.contact-form-card textarea {
+    border: none;
+    outline: none;
+    resize: none;
+    flex-grow: 1;
+    font-family: inherit;
+    font-size: 16px;
+    color: #3d4f47;
+    margin-bottom: 20px;
+}
+.contact-form-card textarea::placeholder {
+    color: #a4b3ac;
+}
+
+.form-footer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn-kirim {
+    background: #1e4631;
+    color: white;
+    border: none;
+    padding: 10px 32px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.btn-kirim:hover {
+    background: #163625;
+}
+
+/* Footer */
+.contact-footer {
+    background: #1e4631;
+    color: rgba(255,255,255,0.6);
+    padding: 60px 0;
+    text-align: center;
+    font-size: 14px;
+    min-height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.contact-footer a {
+    color: rgba(255,255,255,0.6);
+    text-decoration: none;
+    margin-left: 5px;
+}
+.contact-footer a:hover {
+    color: white;
+    text-decoration: underline;
+}
+
+@media (max-width: 900px) {
+    .contact-container {
+        flex-direction: column;
+    }
+    .contact-info-card, .contact-form-card {
+        width: 100%;
+    }
+}

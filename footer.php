@@ -23,7 +23,7 @@
                 <div class="footer-heading">Bantuan</div>
                 <div class="footer-links">
                     <a href="?page=faq">FAQ</a>
-                    <a href="?page=contact">Hubungi Kami</a>
+                    <a href="pages/about/contact.php">Hubungi Kami</a>
                     <a href="#">Kebijakan Privasi</a>
                     <a href="#">Syarat Penggunaan</a>
                 </div>

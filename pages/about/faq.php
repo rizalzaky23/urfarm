@@ -9,15 +9,17 @@ session_start();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FAQ - UrFarm</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../css/faq.css">
+    <link rel="stylesheet" href="../../css/faq.css">
 </head>
 
 <body>
 
     <nav id="navbar">
-        <a href="<?= isset($_SESSION['user_id']) ? '../landing.php' : '../index.php' ?>" class="nav-logo">Ur<span>Farm</span></a>
+        <a href="<?= isset($_SESSION['user_id']) ? '../landing.php' : '../index.php' ?>"
+            class="nav-logo">Ur<span>Farm</span></a>
         <div class="nav-links" id="navLinks">
-            <a href="<?= isset($_SESSION['user_id']) ? '../landing.php' : '../index.php?page=home' ?>" class="nav-a">Home</a>
+            <a href="<?= isset($_SESSION['user_id']) ? '../landing.php' : '../index.php?page=home' ?>"
+                class="nav-a">Home</a>
             <a href="../index.php?page=program" class="nav-a">Program</a>
             <a href="partner.php" class="nav-a">Partner</a>
             <a href="publikasi.php" class="nav-a">Publikasi</a>
@@ -25,7 +27,7 @@ session_start();
                 <a href="#" class="nav-a active">Bantuan ▾</a>
                 <div class="dropdown-menu">
                     <a href="about/tentang.php" class="dd-a">Tentang Kami</a>
-                    <a href="../index.php?page=contact" class="dd-a">Hubungi Kami</a>
+                    <a href="contact.php" class="dd-a">Hubungi Kami</a>
                     <a href="faq.php" class="dd-a">FAQ</a>
                 </div>
             </div>
@@ -58,7 +60,13 @@ session_start();
                     <span class="faq-icon">∧</span>
                 </div>
                 <div class="faq-answer open">
-                    <p>UrFarm hadir sebagai platform donasi lingkungan yang menghubungkan masyarakat dengan program penghijauan dan pelestarian alam di berbagai wilayah di Indonesia. Melalui website ini, setiap donatur dapat menyumbang bibit pohon sekaligus melacak secara digital di mana bibit tersebut ditanam, kondisi lokasi, dan perkembangan pohonnya dari waktu ke waktu. Pendekatan berbasis teknologi digital ini diharapkan mampu meningkatkan transparansi, memperkuat kepercayaan publik, sekaligus mendorong partisipasi aktif masyarakat dalam pelestarian lingkungan melalui pengalaman donasi yang interaktif dan dapat dilacak.</p>
+                    <p>UrFarm hadir sebagai platform donasi lingkungan yang menghubungkan masyarakat dengan program
+                        penghijauan dan pelestarian alam di berbagai wilayah di Indonesia. Melalui website ini, setiap
+                        donatur dapat menyumbang bibit pohon sekaligus melacak secara digital di mana bibit tersebut
+                        ditanam, kondisi lokasi, dan perkembangan pohonnya dari waktu ke waktu. Pendekatan berbasis
+                        teknologi digital ini diharapkan mampu meningkatkan transparansi, memperkuat kepercayaan publik,
+                        sekaligus mendorong partisipasi aktif masyarakat dalam pelestarian lingkungan melalui pengalaman
+                        donasi yang interaktif dan dapat dilacak.</p>
                 </div>
             </div>
 
@@ -68,7 +76,9 @@ session_start();
                     <span class="faq-icon">∨</span>
                 </div>
                 <div class="faq-answer">
-                    <p>Untuk berdonasi di UrFarm, kamu cukup membuat akun, memilih program yang ingin kamu dukung, lalu menentukan jumlah donasi. Kami menyediakan berbagai metode pembayaran seperti transfer bank, dompet digital, dan kartu kredit untuk kemudahan transaksi kamu.</p>
+                    <p>Untuk berdonasi di UrFarm, kamu cukup membuat akun, memilih program yang ingin kamu dukung, lalu
+                        menentukan jumlah donasi. Kami menyediakan berbagai metode pembayaran seperti transfer bank,
+                        dompet digital, dan kartu kredit untuk kemudahan transaksi kamu.</p>
                 </div>
             </div>
 
@@ -78,7 +88,8 @@ session_start();
                     <span class="faq-icon">∨</span>
                 </div>
                 <div class="faq-answer">
-                    <p>Minimal donasi di UrFarm adalah Rp 10.000 per transaksi. Dengan nominal tersebut, kamu sudah berkontribusi nyata dalam program penghijauan dan pelestarian lingkungan di Indonesia.</p>
+                    <p>Minimal donasi di UrFarm adalah Rp 10.000 per transaksi. Dengan nominal tersebut, kamu sudah
+                        berkontribusi nyata dalam program penghijauan dan pelestarian lingkungan di Indonesia.</p>
                 </div>
             </div>
 
@@ -88,7 +99,9 @@ session_start();
                     <span class="faq-icon">∨</span>
                 </div>
                 <div class="faq-answer">
-                    <p>Setelah berdonasi, kamu akan mendapatkan kode unik benih. Gunakan kode tersebut di fitur Lacak Benih pada halaman utama untuk melihat status, lokasi tanam, dan perkembangan bibit yang kamu donasikan secara real-time melalui peta interaktif kami.</p>
+                    <p>Setelah berdonasi, kamu akan mendapatkan kode unik benih. Gunakan kode tersebut di fitur Lacak
+                        Benih pada halaman utama untuk melihat status, lokasi tanam, dan perkembangan bibit yang kamu
+                        donasikan secara real-time melalui peta interaktif kami.</p>
                 </div>
             </div>
 
@@ -97,7 +110,8 @@ session_start();
     </div>
 
     <footer class="faq-footer">
-        © 2026 UrFarm — <a href="<?= isset($_SESSION['user_id']) ? '../landing.php' : '../index.php' ?>">Kembali ke Beranda</a>
+        © 2026 UrFarm — <a href="<?= isset($_SESSION['user_id']) ? '../landing.php' : '../index.php' ?>">Kembali ke
+            Beranda</a>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

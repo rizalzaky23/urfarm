@@ -24,7 +24,7 @@ session_start();
                 <a href="#" class="nav-a active">Bantuan ▾</a>
                 <div class="dropdown-menu">
                     <a href="tentang.php" class="dd-a">Tentang Kami</a>
-                    <a href="../../index.php?page=contact" class="dd-a">Hubungi Kami</a>
+                    <a href="contact.php" class="dd-a">Hubungi Kami</a>
                     <a href="../../index.php?page=faq" class="dd-a">FAQ</a>
                 </div>
             </div>

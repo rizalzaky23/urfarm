@@ -35,7 +35,7 @@ if (!isset($_SESSION['user_id'])) {
                 <a href="#">Tentang ▾</a>
                 <div class="dropdown-menu">
                     <a href="pages/about/tentang.php">Tentang Kami</a>
-                    <a href="#">Hubungi Kami</a>
+                    <a href="pages/about/contact.php">Hubungi Kami</a>
                     <a href="#">FAQ</a>
                 </div>
             </div>
@@ -255,7 +255,7 @@ if (!isset($_SESSION['user_id'])) {
                 <div class="footer-heading">Bantuan</div>
                 <div class="footer-links">
                     <a href="#">FAQ</a>
-                    <a href="#">Hubungi Kami</a>
+                    <a href="pages/about/contact.php">Hubungi Kami</a>
                     <a href="#">Kebijakan Privasi</a>
                     <a href="#">Syarat Penggunaan</a>
                 </div>

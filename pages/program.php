@@ -29,7 +29,7 @@ $page = $_GET['page'] ?? 'home';
                 <a href="#">Tentang ▾</a>
                 <div class="dropdown-menu">
                     <a href="about/tentang.php">Tentang Kami</a>
-                    <a href="?page=contact">Hubungi Kami</a>
+                    <a href="about/contact.php">Hubungi Kami</a>
                     <a href="about/faq.php">FAQ</a>
                 </div>
             </div>

@@ -26,7 +26,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $result = $stmt->get_result();
         $user   = $result->fetch_assoc();
         $stmt->close();
-
         if ($user && hash('sha256', $pass) === $user['password']) {
             $_SESSION['user_id']   = $user['id'];
             $_SESSION['user_nama'] = $user['nama'];
@@ -35,7 +34,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($user['role'] === 'admin') {
                 header('Location: ../admin/dashboard.php');
             } else {
-                header('Location: ../landing.php'); // donatur redirect ke landing page
+                if (isset($_SESSION['redirect_to']) && $_SESSION['redirect_to'] === 'contact') {
+                    unset($_SESSION['redirect_to']);
+                    header('Location: ../pages/about/contact.php');
+                } else {
+                    header('Location: ../landing.php'); // donatur redirect ke landing page
+                }
             }
             exit;
         } else {
