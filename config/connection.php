@@ -1,8 +1,8 @@
 <?php
 
-$hostname = "localhost";
-$username = "root";
-$password = "";
+$hostname = "20.39.192.91";
+$username = "urfarm";
+$password = "PWDasik123";
 $database = "urfarm_db";
 
 $conn = new mysqli($hostname, $username, $password, $database);
