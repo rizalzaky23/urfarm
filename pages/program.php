@@ -7,7 +7,7 @@ $page = $_GET['page'] ?? 'home';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Program UrFarm</title>
+    <title>Program - UrFarm</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/program.css" rel="stylesheet">
     
@@ -21,7 +21,7 @@ $page = $_GET['page'] ?? 'home';
     <a href="?page=home" class="nav-logo">Ur<span>Farm</span></a>
 </div>
         <div class="nav-links" id="navLinks">
-            <a href="?page=home" <?= $page == 'home' ? 'class="active"' : '' ?>>Home</a>
+            <a href="/urfarm/?page=home">Home</a>
             <a href="program.php" <?= $page == 'program' ? 'class="active"' : '' ?>>Program</a>
             <a href="partner.php" <?= $page == 'partner' ? 'class="active"' : '' ?>>Partner</a>
             <a href="publikasi.php" <?= $page == 'publikasi' ? 'class="active"' : '' ?>>Publikasi</a>

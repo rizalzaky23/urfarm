@@ -1,5 +1,6 @@
 <?php
 session_start();
+$page = $_GET['page'] ?? 'home';
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -7,44 +8,47 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tentang Kami — UrFarm</title>
+    <title>Tentang Kami - UrFarm</title>
     <link rel="stylesheet" href="../../css/tentang.css">
 </head>
 
 <body>
 
+    <!-- NAVBAR -->
     <nav id="navbar">
-        <a href="<?= isset($_SESSION['user_id']) ? '../../landing.php' : '../../index.php' ?>" class="nav-logo">Ur<span>Farm</span></a>
+        <div class="nav-brand">
+    <div class="navbar-logo-icon"></div>
+    <a href="?page=home" class="nav-logo">Ur<span>Farm</span></a>
+</div>
         <div class="nav-links" id="navLinks">
-            <a href="<?= isset($_SESSION['user_id']) ? '../../landing.php' : '../../index.php?page=home' ?>" class="nav-a">Home</a>
-            <a href="../../index.php?page=program" class="nav-a">Program</a>
-            <a href="../partner.php" class="nav-a">Partner</a>
-            <a href="../publikasi.php" class="nav-a">Publikasi</a>
+            <a href="/urfarm/?page=home">Home</a>
+            <a href="/urfarm/pages/program.php" <?= $page == 'program' ? 'class="active"' : '' ?>>Program</a>
+        <a href="/urfarm/pages/partner.php" <?= $page == 'partner' ? 'class="active"' : '' ?>>Partner</a>
+        <a href="/urfarm/pages/publikasi.php" <?= $page == 'publikasi' ? 'class="active"' : '' ?>>Publikasi</a>
             <div class="dropdown">
-                <a href="#" class="nav-a active">Bantuan ▾</a>
+                <a href="#">Tentang ▾</a>
                 <div class="dropdown-menu">
-                    <a href="tentang.php" class="dd-a">Tentang Kami</a>
-                    <a href="contact.php" class="dd-a">Hubungi Kami</a>
-                    <a href="../../index.php?page=faq" class="dd-a">FAQ</a>
+                    <a href="/urfarm/pages/about/tentang.php">Tentang Kami</a>
+                <a href="/urfarm/pages/about/contact.php">Hubungi Kami</a>
+                <a href="/urfarm/pages/about/faq.php">FAQ</a>
                 </div>
             </div>
             <?php if (isset($_SESSION['user_id'])): ?>
                 <div class="dropdown">
-                    <a href="#" class="nav-a">👤 <?= htmlspecialchars($_SESSION['user_nama']) ?> ▾</a>
+                    <a href="#">👤 <?= htmlspecialchars($_SESSION['user_nama']) ?> ▾</a>
                     <div class="dropdown-menu">
                         <?php if ($_SESSION['user_role'] === 'admin'): ?>
-                            <a href="../../admin/dashboard.php" class="dd-a">Dashboard</a>
+                        <a href="admin/dashboard.php">Dashboard</a>
                         <?php endif; ?>
-                        <a href="../../auth/logout.php" class="dd-a">Keluar</a>
+                        <a href="../auth/login.php" class="btn-masuk">Masuk</a>
                     </div>
                 </div>
             <?php else: ?>
-                <a href="../../auth/login.php" class="btn-masuk">Masuk</a>
+                <a href="../auth/login.php" class="btn-masuk">Masuk</a>
             <?php endif; ?>
         </div>
         <button class="menu-toggle" id="menuToggle">☰</button>
     </nav>
-
     <!-- HERO -->
     <section class="tentang-hero">
         <div class="tentang-hero-overlay"></div>

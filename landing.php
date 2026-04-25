@@ -1,5 +1,6 @@
 <?php
 session_start();
+$page = $_GET['page'] ?? 'home';
 
 // Proteksi: harus login untuk mengakses
 if (!isset($_SESSION['user_id'])) {
@@ -13,7 +14,7 @@ if (!isset($_SESSION['user_id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UrFarm — Tanam Pohon, Tanam Kebaikan, Selamatkan Bumi</title>
+    <title>UrFarm - Tanam Pohon, Tanam Kebaikan, Selamatkan Bumi</title>
     <meta name="description"
         content="Platform donasi lingkungan terpercaya untuk penghijauan Indonesia. Setiap donasi menjadi bibit nyata yang bisa kamu lacak.">
     <link rel="stylesheet" href="css/landing.css">
@@ -23,38 +24,40 @@ if (!isset($_SESSION['user_id'])) {
 
 <body>
 
-    <!-- ===== NAVBAR ===== -->
+    <!-- NAVBAR -->
     <nav id="navbar">
-        <a href="landing.php" class="nav-logo">Ur<span>Farm</span></a>
+        <div class="nav-brand">
+    <div class="navbar-logo-icon"></div>
+    <a href="?page=home" class="nav-logo">Ur<span>Farm</span></a>
+</div>
         <div class="nav-links" id="navLinks">
-            <a href="landing.php" class="active">Home</a>
-            <a href="#">Program</a>
-            <a href="pages/partner.php">Partner</a>
-            <a href="pages/publikasi.php">Publikasi</a>
+            <a href="?page=home" <?= $page == 'home' ? 'class="active"' : '' ?>>Home</a>
+            <a href="pages/program.php" <?= $page == 'program' ? 'class="active"' : '' ?>>Program</a>
+            <a href="pages/partner.php" <?= $page == 'partner' ? 'class="active"' : '' ?>>Partner</a>
+            <a href="pages/publikasi.php" <?= $page == 'publikasi' ? 'class="active"' : '' ?>>Publikasi</a>
             <div class="dropdown">
                 <a href="#">Tentang ▾</a>
                 <div class="dropdown-menu">
                     <a href="pages/about/tentang.php">Tentang Kami</a>
                     <a href="pages/about/contact.php">Hubungi Kami</a>
-                    <a href="#">FAQ</a>
+                    <a href="pages/about/faq.php">FAQ</a>
                 </div>
             </div>
-            <div class="dropdown">
-                <a href="#" class="nav-user">
-                    <span class="nav-avatar">👤</span>
-                    <?= htmlspecialchars($_SESSION['user_nama']) ?> ▾
-                </a>
-                <div class="dropdown-menu">
-                    <?php if ($_SESSION['user_role'] === 'admin'): ?>
-                        <a href="admin/dashboard.php">Dashboard Admin</a>
-                    <?php endif; ?>
-                    <a href="#">Profil Saya</a>
-                    <a href="#" class="divider-link">Riwayat Donasi</a>
-                    <a href="auth/logout.php" class="logout-link">Keluar</a>
+            <?php if (isset($_SESSION['user_id'])): ?>
+                <div class="dropdown">
+                    <a href="#">👤 <?= htmlspecialchars($_SESSION['user_nama']) ?> ▾</a>
+                    <div class="dropdown-menu">
+                        <?php if ($_SESSION['user_role'] === 'admin'): ?>
+                        <a href="admin/dashboard.php">Dashboard</a>
+                        <?php endif; ?>
+                        <a href="auth/logout.php">Keluar</a>
+                    </div>
                 </div>
-            </div>
+            <?php else: ?>
+                <a href="auth/login.php" class="btn-masuk">Masuk</a>
+            <?php endif; ?>
         </div>
-        <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">☰</button>
+        <button class="menu-toggle" id="menuToggle">☰</button>
     </nav>
 
     <!-- ===== HERO ===== -->
