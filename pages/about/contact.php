@@ -63,9 +63,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <a href="#" class="nav-a">👤 <?= htmlspecialchars($_SESSION['user_nama']) ?> ▾</a>
                     <div class="dropdown-menu">
                         <?php if ($_SESSION['user_role'] === 'admin'): ?>
-                            <a href="../../admin/dashboard.php" class="dd-a">Dashboard</a>
+                            <a href="/project-urfarm/admin/dashboard.php" class="dd-a">Dashboard</a>
                         <?php endif; ?>
-                        <a href="../../auth/logout.php" class="dd-a">Keluar</a>
+                        <a href="/project-urfarm/pages/riwayat_donasi.php" class="dd-a">Riwayat Donasi</a>
+                        <a href="/project-urfarm/auth/logout.php" class="dd-a">Keluar</a>
                     </div>
                 </div>
             <?php else: ?>

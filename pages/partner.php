@@ -18,10 +18,10 @@ $page = $_GET['page'] ?? 'home';
     <nav id="navbar">
         <div class="nav-brand">
     <div class="navbar-logo-icon"></div>
-    <a href="?page=home" class="nav-logo">Ur<span>Farm</span></a>
+    <a href="<?= isset($_SESSION['user_id']) ? '/project-urfarm/landing.php' : '/project-urfarm/index.php' ?>" class="nav-logo">Ur<span>Farm</span></a>
 </div>
         <div class="nav-links" id="navLinks">
-<a href="/urfarm/?page=home">Home</a>
+<a href="<?= isset($_SESSION['user_id']) ? '/project-urfarm/landing.php' : '/project-urfarm/index.php' ?>">Home</a>
             <a href="program.php" <?= $page == 'program' ? 'class="active"' : '' ?>>Program</a>
             <a href="partner.php" <?= $page == 'partner' ? 'class="active"' : '' ?>>Partner</a>
             <a href="publikasi.php" <?= $page == 'publikasi' ? 'class="active"' : '' ?>>Publikasi</a>
@@ -38,13 +38,14 @@ $page = $_GET['page'] ?? 'home';
                     <a href="#">👤 <?= htmlspecialchars($_SESSION['user_nama']) ?> ▾</a>
                     <div class="dropdown-menu">
                         <?php if ($_SESSION['user_role'] === 'admin'): ?>
-                        <a href="admin/dashboard.php">Dashboard</a>
+                        <a href="/project-urfarm/admin/dashboard.php">Dashboard</a>
                         <?php endif; ?>
-                        <a href="../auth/login.php" class="btn-masuk">Masuk</a>
+                        <a href="/project-urfarm/pages/riwayat_donasi.php">Riwayat Donasi</a>
+                        <a href="/project-urfarm/auth/logout.php">Keluar</a>
                     </div>
                 </div>
             <?php else: ?>
-                <a href="../auth/login.php" class="btn-masuk">Masuk</a>
+                <a href="/project-urfarm/auth/login.php" class="btn-masuk">Masuk</a>
             <?php endif; ?>
         </div>
         <button class="menu-toggle" id="menuToggle">☰</button>

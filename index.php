@@ -1,5 +1,13 @@
 <?php
 session_start();
+if (isset($_SESSION['user_id'])) {
+    if (isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin') {
+        header('Location: admin/dashboard.php');
+    } else {
+        header('Location: landing.php');
+    }
+    exit;
+}
 $page = $_GET['page'] ?? 'home';
 ?>
 <!DOCTYPE html>
@@ -41,13 +49,14 @@ $page = $_GET['page'] ?? 'home';
                     <a href="#">👤 <?= htmlspecialchars($_SESSION['user_nama']) ?> ▾</a>
                     <div class="dropdown-menu">
                         <?php if ($_SESSION['user_role'] === 'admin'): ?>
-                        <a href="admin/dashboard.php">Dashboard</a>
+                        <a href="/project-urfarm/admin/dashboard.php">Dashboard</a>
                         <?php endif; ?>
-                        <a href="auth/logout.php">Keluar</a>
+                        <a href="/project-urfarm/pages/riwayat_donasi.php">Riwayat Donasi</a>
+                        <a href="/project-urfarm/auth/logout.php">Keluar</a>
                     </div>
                 </div>
             <?php else: ?>
-                <a href="auth/login.php" class="btn-masuk">Masuk</a>
+                <a href="/project-urfarm/auth/login.php" class="btn-masuk">Masuk</a>
             <?php endif; ?>
         </div>
         <button class="menu-toggle" id="menuToggle">☰</button>

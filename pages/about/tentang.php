@@ -18,19 +18,19 @@ $page = $_GET['page'] ?? 'home';
     <nav id="navbar">
         <div class="nav-brand">
     <div class="navbar-logo-icon"></div>
-    <a href="?page=home" class="nav-logo">Ur<span>Farm</span></a>
+    <a href="<?= isset($_SESSION['user_id']) ? '/project-urfarm/landing.php' : '/project-urfarm/index.php' ?>" class="nav-logo">Ur<span>Farm</span></a>
 </div>
         <div class="nav-links" id="navLinks">
-            <a href="/urfarm/?page=home">Home</a>
-            <a href="/urfarm/pages/program.php" <?= $page == 'program' ? 'class="active"' : '' ?>>Program</a>
-        <a href="/urfarm/pages/partner.php" <?= $page == 'partner' ? 'class="active"' : '' ?>>Partner</a>
-        <a href="/urfarm/pages/publikasi.php" <?= $page == 'publikasi' ? 'class="active"' : '' ?>>Publikasi</a>
+            <a href="<?= isset($_SESSION['user_id']) ? '/project-urfarm/landing.php' : '/project-urfarm/index.php' ?>">Home</a>
+            <a href="/project-urfarm/pages/program.php" <?= $page == 'program' ? 'class="active"' : '' ?>>Program</a>
+        <a href="/project-urfarm/pages/partner.php" <?= $page == 'partner' ? 'class="active"' : '' ?>>Partner</a>
+        <a href="/project-urfarm/pages/publikasi.php" <?= $page == 'publikasi' ? 'class="active"' : '' ?>>Publikasi</a>
             <div class="dropdown">
                 <a href="#">Tentang ▾</a>
                 <div class="dropdown-menu">
-                    <a href="/urfarm/pages/about/tentang.php">Tentang Kami</a>
-                <a href="/urfarm/pages/about/contact.php">Hubungi Kami</a>
-                <a href="/urfarm/pages/about/faq.php">FAQ</a>
+                    <a href="/project-urfarm/pages/about/tentang.php">Tentang Kami</a>
+                <a href="/project-urfarm/pages/about/contact.php">Hubungi Kami</a>
+                <a href="/project-urfarm/pages/about/faq.php">FAQ</a>
                 </div>
             </div>
             <?php if (isset($_SESSION['user_id'])): ?>
@@ -38,13 +38,14 @@ $page = $_GET['page'] ?? 'home';
                     <a href="#">👤 <?= htmlspecialchars($_SESSION['user_nama']) ?> ▾</a>
                     <div class="dropdown-menu">
                         <?php if ($_SESSION['user_role'] === 'admin'): ?>
-                        <a href="admin/dashboard.php">Dashboard</a>
+                        <a href="/project-urfarm/admin/dashboard.php">Dashboard</a>
                         <?php endif; ?>
-                        <a href="../auth/login.php" class="btn-masuk">Masuk</a>
+                        <a href="/project-urfarm/pages/riwayat_donasi.php">Riwayat Donasi</a>
+                        <a href="/project-urfarm/auth/logout.php">Keluar</a>
                     </div>
                 </div>
             <?php else: ?>
-                <a href="../auth/login.php" class="btn-masuk">Masuk</a>
+                <a href="/project-urfarm/auth/login.php" class="btn-masuk">Masuk</a>
             <?php endif; ?>
         </div>
         <button class="menu-toggle" id="menuToggle">☰</button>
@@ -63,7 +64,7 @@ $page = $_GET['page'] ?? 'home';
     <div class="tentang-content">
         <div class="tentang-card">
             <p>
-                UrFarm adalah platform donasi lingkungan berbasis digital yang menghubungkan para donatur dengan program penghijauan nyata di seluruh Indonesia. Didirikan pada tahun 2023, UrFarm lahir dari keprihatinan mendalam terhadap laju deforestasi yang terus meningkat di Indonesia — negara dengan hutan tropis terbesar ketiga di dunia.
+                UrFarm adalah platform donasi lingkungan berbasis digital yang menghubungkan para donatur dengan program penghijauan nyata di seluruh Indonesia. Didirikan pada tahun 2026, UrFarm lahir dari keprihatinan mendalam terhadap laju deforestasi yang terus meningkat di Indonesia — negara dengan hutan tropis terbesar ketiga di dunia.
             </p>
             <p>
                 Setiap donasi yang masuk melalui UrFarm langsung dialokasikan untuk pembelian bibit, proses penanaman, dan pemeliharaan pohon di berbagai lokasi strategis. Kami bekerja sama dengan komunitas lokal, petani, dan relawan untuk memastikan setiap bibit yang ditanam tumbuh dengan baik dan memberikan dampak positif bagi ekosistem sekitarnya.
@@ -86,22 +87,22 @@ $page = $_GET['page'] ?? 'home';
         <div class="carousel-wrapper">
             <div class="carousel-track" id="carouselTrack">
                 <div class="carousel-slide">
-                    <img src="../../assets/img1.png" alt="Kegiatan Penanaman 1">
+                    <img src="../../assets/tentang/img1.png" alt="Kegiatan Penanaman 1">
                 </div>
                 <div class="carousel-slide">
-                    <img src="../../assets/img2.jpeg" alt="Kegiatan Penanaman 2">
+                    <img src="../../assets/tentang/img2.png" alt="Kegiatan Penanaman 2">
                 </div>
                 <div class="carousel-slide">
-                    <img src="../../assets/img3.jpeg" alt="Restorasi Mangrove">
+                    <img src="../../assets/tentang/img3.png" alt="Restorasi Mangrove">
                 </div>
                 <div class="carousel-slide">
-                    <img src="../../assets/img4.jpeg" alt="Agroforestri">
+                    <img src="../../assets/tentang/img4.png" alt="Agroforestri">
                 </div>
                 <div class="carousel-slide">
-                    <img src="../../assets/img5.png" alt="Hutan dari Atas">
+                    <img src="../../assets/tentang/img5.png" alt="Hutan dari Atas">
                 </div>
                 <div class="carousel-slide">
-                    <img src="../../assets/img6.jpg" alt="Bibit Pohon">
+                    <img src="../../assets/tentang/img6.png" alt="Bibit Pohon">
                 </div>
             </div>
         </div>

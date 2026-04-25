@@ -35,10 +35,10 @@ $highlight = !empty($publikasi) ? array_shift($publikasi) : null;
     <nav id="navbar">
         <div class="nav-brand">
     <div class="navbar-logo-icon"></div>
-    <a href="?page=home" class="nav-logo">Ur<span>Farm</span></a>
+    <a href="<?= isset($_SESSION['user_id']) ? '/project-urfarm/landing.php' : '/project-urfarm/index.php' ?>" class="nav-logo">Ur<span>Farm</span></a>
 </div>
         <div class="nav-links" id="navLinks">
-            <a href="/urfarm/?page=home">Home</a>
+            <a href="<?= isset($_SESSION['user_id']) ? '/project-urfarm/landing.php' : '/project-urfarm/index.php' ?>">Home</a>
             <a href="program.php" <?= $page == 'program' ? 'class="active"' : '' ?>>Program</a>
             <a href="partner.php" <?= $page == 'partner' ? 'class="active"' : '' ?>>Partner</a>
             <a href="publikasi.php" <?= $page == 'publikasi' ? 'class="active"' : '' ?>>Publikasi</a>
@@ -55,13 +55,14 @@ $highlight = !empty($publikasi) ? array_shift($publikasi) : null;
                     <a href="#">👤 <?= htmlspecialchars($_SESSION['user_nama']) ?> ▾</a>
                     <div class="dropdown-menu">
                         <?php if ($_SESSION['user_role'] === 'admin'): ?>
-                        <a href="admin/dashboard.php">Dashboard</a>
+                        <a href="/project-urfarm/admin/dashboard.php">Dashboard</a>
                         <?php endif; ?>
-                        <a href="../auth/login.php" class="btn-masuk">Masuk</a>
+                        <a href="/project-urfarm/pages/riwayat_donasi.php">Riwayat Donasi</a>
+                        <a href="/project-urfarm/auth/logout.php">Keluar</a>
                     </div>
                 </div>
             <?php else: ?>
-                <a href="../auth/login.php" class="btn-masuk">Masuk</a>
+                <a href="/project-urfarm/auth/login.php" class="btn-masuk">Masuk</a>
             <?php endif; ?>
         </div>
         <button class="menu-toggle" id="menuToggle">☰</button>
@@ -96,7 +97,7 @@ $highlight = !empty($publikasi) ? array_shift($publikasi) : null;
                     <div class="highlight-meta">
                         <span class="meta-info"><?= date('d F Y', strtotime($highlight['tanggal_publikasi'])) ?></span>
                         <span class="meta-info"><?= htmlspecialchars($highlight['nama_event'] ?? 'Tim UrFarm') ?></span>
-                        <a href="#" class="btn-green">Baca Selengkapnya</a>
+                        <a href="detail-publikasi.php?id=<?= $highlight['id_publikasi'] ?>" class="btn-green">Baca Selengkapnya</a>
                     </div>
                 </div>
             </div>
@@ -125,7 +126,7 @@ $highlight = !empty($publikasi) ? array_shift($publikasi) : null;
                         <p class="artikel-desc"><?= htmlspecialchars(mb_strimwidth($artikel['isi'], 0, 120, '...')) ?></p>
                         <div class="artikel-footer">
                             <span class="artikel-author"><?= htmlspecialchars($artikel['nama_event'] ?? 'Tim UrFarm') ?></span>
-                            <a href="#" class="link-baca">Baca →</a>
+                            <a href="detail-publikasi.php?id=<?= $artikel['id_publikasi'] ?>" class="link-baca">Baca →</a>
                         </div>
                     </div>
                 </div>
