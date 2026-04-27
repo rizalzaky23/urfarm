@@ -42,14 +42,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
 
     <nav id="navbar">
-        <a href="<?= isset($_SESSION['user_id']) ? '../../landing.php' : '../../index.php' ?>"
+        <a href="<?= isset($_SESSION['user_id']) ? '/project-urfarm/landing.php' : '/project-urfarm/index.php' ?>"
             class="nav-logo">Ur<span>Farm</span></a>
         <div class="nav-links" id="navLinks">
-            <a href="<?= isset($_SESSION['user_id']) ? '../../landing.php' : '../../index.php?page=home' ?>"
+            <a href="<?= isset($_SESSION['user_id']) ? '/project-urfarm/landing.php' : '/project-urfarm/index.php' ?>"
                 class="nav-a">Home</a>
-            <a href="../../index.php?page=program" class="nav-a">Program</a>
-            <a href="../partner.php" class="nav-a">Partner</a>
-            <a href="../publikasi.php" class="nav-a">Publikasi</a>
+            <a href="/project-urfarm/pages/program.php" class="nav-a">Program</a>
+            <a href="/project-urfarm/pages/partner.php" class="nav-a">Partner</a>
+            <a href="/project-urfarm/pages/publikasi.php" class="nav-a">Publikasi</a>
             <div class="dropdown">
                 <a href="#" class="nav-a active">Bantuan ▾</a>
                 <div class="dropdown-menu">
@@ -135,7 +135,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 
     <footer class="contact-footer">
-        © 2026 UrFarm — <a href="<?= isset($_SESSION['user_id']) ? '../../landing.php' : '../../index.php' ?>">Kembali ke Beranda</a>
+        © 2026 UrFarm — <a href="<?= isset($_SESSION['user_id']) ? '/project-urfarm/landing.php' : '/project-urfarm/index.php' ?>">Kembali ke Beranda</a>
     </footer>
 
     <script>

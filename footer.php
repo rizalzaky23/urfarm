@@ -2,7 +2,7 @@
     <footer>
         <div class="footer-grid">
             <div class="footer-brand">
-                <a href="?page=home" class="nav-logo">Ur<span>Farm</span></a>
+                <a href="/project-urfarm/index.php" class="nav-logo">Ur<span>Farm</span></a>
                 <p class="footer-desc">Platform donasi lingkungan untuk mendorong penghijauan dan pelestarian alam
                     Indonesia.</p>
                 <div class="footer-contact">
@@ -13,17 +13,17 @@
             <div>
                 <div class="footer-heading">Navigasi</div>
                 <div class="footer-links">
-                    <a href="?page=home">Home</a>
-                    <a href="?page=program">Program</a>
-                    <a href="?page=partner">Partner</a>
-                    <a href="?page=publikasi">Publikasi</a>
+                    <a href="/project-urfarm/index.php">Home</a>
+                    <a href="/project-urfarm/pages/program.php">Program</a>
+                    <a href="/project-urfarm/pages/partner.php">Partner</a>
+                    <a href="/project-urfarm/pages/publikasi.php">Publikasi</a>
                 </div>
             </div>
             <div>
                 <div class="footer-heading">Bantuan</div>
                 <div class="footer-links">
-                    <a href="?page=faq">FAQ</a>
-                    <a href="pages/about/contact.php">Hubungi Kami</a>
+                    <a href="/project-urfarm/pages/about/faq.php">FAQ</a>
+                    <a href="/project-urfarm/pages/about/contact.php">Hubungi Kami</a>
                     <a href="#">Kebijakan Privasi</a>
                     <a href="#">Syarat Penggunaan</a>
                 </div>

@@ -28,10 +28,10 @@ if (!isset($_SESSION['user_id'])) {
     <nav id="navbar">
         <div class="nav-brand">
     <div class="navbar-logo-icon"></div>
-    <a href="?page=home" class="nav-logo">Ur<span>Farm</span></a>
+    <a href="/project-urfarm/landing.php" class="nav-logo">Ur<span>Farm</span></a>
 </div>
         <div class="nav-links" id="navLinks">
-            <a href="?page=home" <?= $page == 'home' ? 'class="active"' : '' ?>>Home</a>
+            <a href="/project-urfarm/landing.php" <?= $page == 'home' ? 'class="active"' : '' ?>>Home</a>
             <a href="pages/program.php" <?= $page == 'program' ? 'class="active"' : '' ?>>Program</a>
             <a href="pages/partner.php" <?= $page == 'partner' ? 'class="active"' : '' ?>>Partner</a>
             <a href="pages/publikasi.php" <?= $page == 'publikasi' ? 'class="active"' : '' ?>>Publikasi</a>
@@ -250,7 +250,7 @@ if (!isset($_SESSION['user_id'])) {
                 <div class="footer-heading">Navigasi</div>
                 <div class="footer-links">
                     <a href="landing.php">Home</a>
-                    <a href="#">Program</a>
+                    <a href="pages/program.php">Program</a>
                     <a href="#">Partner</a>
                     <a href="pages/publikasi.php">Publikasi</a>
                 </div>
@@ -258,7 +258,7 @@ if (!isset($_SESSION['user_id'])) {
             <div>
                 <div class="footer-heading">Bantuan</div>
                 <div class="footer-links">
-                    <a href="#">FAQ</a>
+                    <a href="pages/about/faq.php">FAQ</a>
                     <a href="pages/about/contact.php">Hubungi Kami</a>
                     <a href="#">Kebijakan Privasi</a>
                     <a href="#">Syarat Penggunaan</a>

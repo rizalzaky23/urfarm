@@ -114,7 +114,7 @@ $page = $_GET['page'] ?? 'home';
     </div>
 
     <footer class="faq-footer">
-        © 2026 UrFarm — <a href="<?= isset($_SESSION['user_id']) ? '../landing.php' : '../index.php' ?>">Kembali ke
+        © 2026 UrFarm — <a href="<?= isset($_SESSION['user_id']) ? '/project-urfarm/landing.php' : '/project-urfarm/index.php' ?>">Kembali ke
             Beranda</a>
     </footer>
 

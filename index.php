@@ -29,10 +29,10 @@ $page = $_GET['page'] ?? 'home';
     <nav id="navbar">
         <div class="nav-brand">
     <div class="navbar-logo-icon"></div>
-    <a href="?page=home" class="nav-logo">Ur<span>Farm</span></a>
+    <a href="/project-urfarm/index.php" class="nav-logo">Ur<span>Farm</span></a>
 </div>
         <div class="nav-links" id="navLinks">
-            <a href="?page=home" <?= $page == 'home' ? 'class="active"' : '' ?>>Home</a>
+            <a href="/project-urfarm/index.php" <?= $page == 'home' ? 'class="active"' : '' ?>>Home</a>
             <a href="pages/program.php" <?= $page == 'program' ? 'class="active"' : '' ?>>Program</a>
             <a href="pages/partner.php" <?= $page == 'partner' ? 'class="active"' : '' ?>>Partner</a>
             <a href="pages/publikasi.php" <?= $page == 'publikasi' ? 'class="active"' : '' ?>>Publikasi</a>
@@ -78,8 +78,7 @@ $page = $_GET['page'] ?? 'home';
                 <p class="hero-sub">Be the part of the green! Setiap donasi kamu menghijaukan bumi, satu bibit pada satu
                     waktu.</p>
                 <div class="hero-buttons">
-
-                    <a href="?page=program" class="btn-outline">Selengkapnya</a>
+                    <a href="pages/program.php" class="btn-outline">Selengkapnya</a>
                 </div>
             </div>
         </section>
@@ -177,7 +176,7 @@ $page = $_GET['page'] ?? 'home';
                             <p class="program-desc">Bersama komunitas lokal, kami menanam ribuan pohon di area hutan lindung
                                 yang gundul akibat deforestasi. Setiap donasi berkontribusi langsung pada pemulihan
                                 ekosistem hutan.</p>
-                            <a href="?page=program&detail=1" class="btn-green">Lihat Detail Program</a>
+                            <a href="pages/program.php" class="btn-green">Lihat Detail Program</a>
                         </div>
                     </div>
                 </div>
@@ -192,7 +191,7 @@ $page = $_GET['page'] ?? 'home';
                             <h3 class="program-title">Restorasi Mangrove Nusantara</h3>
                             <p class="program-desc">Program penanaman mangrove di sepanjang pesisir Indonesia untuk
                                 melindungi garis pantai dari abrasi dan menjaga habitat ikan serta biota laut.</p>
-                            <a href="?page=program&detail=2" class="btn-green">Lihat Detail Program</a>
+                            <a href="pages/program.php" class="btn-green">Lihat Detail Program</a>
                         </div>
                     </div>
                 </div>
@@ -207,7 +206,7 @@ $page = $_GET['page'] ?? 'home';
                             <h3 class="program-title">Agroforestri Komunitas</h3>
                             <p class="program-desc">Membantu petani lokal menerapkan sistem agroforestri yang ramah
                                 lingkungan sambil meningkatkan produktivitas lahan dan pendapatan keluarga petani.</p>
-                            <a href="?page=program&detail=3" class="btn-green">Lihat Detail Program</a>
+                            <a href="pages/program.php" class="btn-green">Lihat Detail Program</a>
                         </div>
                     </div>
                 </div>
@@ -257,7 +256,7 @@ $page = $_GET['page'] ?? 'home';
                     </div>
                     <div class="cta-buttons">
 
-                        <a href="?page=program" class="btn-outline-white">Pelajari Lebih Lanjut</a>
+                        <a href="pages/program.php" class="btn-outline-white">Pelajari Lebih Lanjut</a>
                     </div>
                 </div>
             </div>
