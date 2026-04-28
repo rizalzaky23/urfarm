@@ -18,6 +18,7 @@ $page = $_GET['page'] ?? 'home';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UrFarm - Tanam Bibit, Lestarikan Bumi Kita</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
 </head>
 
@@ -46,12 +47,12 @@ $page = $_GET['page'] ?? 'home';
             </div>
             <?php if (isset($_SESSION['user_id'])): ?>
                 <div class="dropdown">
-                    <a href="#">👤 <?= htmlspecialchars($_SESSION['user_nama']) ?> ▾</a>
+                    <a href="#"><i class="bi bi-person-circle"></i> <?= htmlspecialchars($_SESSION['user_nama']) ?> ▾</a>
                     <div class="dropdown-menu">
                         <?php if ($_SESSION['user_role'] === 'admin'): ?>
                         <a href="/project-urfarm/admin/dashboard.php">Dashboard</a>
                         <?php endif; ?>
-                        <a href="/project-urfarm/pages/riwayat_donasi.php">Riwayat Donasi</a>
+                        <a href="/project-urfarm/pages/donasi/riwayat.php">Riwayat Donasi</a>
                         <a href="/project-urfarm/auth/logout.php">Keluar</a>
                     </div>
                 </div>
@@ -123,7 +124,7 @@ $page = $_GET['page'] ?? 'home';
                         real-time.</p>
                     <div class="feature-list">
                         <div class="feature-item">
-                            <div class="feature-icon">🌱</div>
+                            <div class="feature-icon"><i class="bi bi-tree-fill"></i></div>
                             <div>
                                 <div class="feature-title">Tanam & Lacak</div>
                                 <div class="feature-desc">Setiap donasi menghasilkan bibit asli dan kamu bisa tahu lacak di
@@ -131,7 +132,7 @@ $page = $_GET['page'] ?? 'home';
                             </div>
                         </div>
                         <div class="feature-item">
-                            <div class="feature-icon">💰</div>
+                            <div class="feature-icon"><i class="bi bi-cash-coin"></i></div>
                             <div>
                                 <div class="feature-title">Dana Transparan</div>
                                 <div class="feature-desc">Kelola dana berbasis akuntabel, donatur bisa memantau penggunaan
@@ -139,7 +140,7 @@ $page = $_GET['page'] ?? 'home';
                             </div>
                         </div>
                         <div class="feature-item">
-                            <div class="feature-icon">🤝</div>
+                            <div class="feature-icon"><i class="bi bi-people-fill"></i></div>
                             <div>
                                 <div class="feature-title">Kolaborasi Luas</div>
                                 <div class="feature-desc">Bersinergi dengan 120+ perusahaan dari berbagai industri untuk

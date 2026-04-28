@@ -40,7 +40,7 @@ $page = $_GET['page'] ?? 'home';
                         <?php if ($_SESSION['user_role'] === 'admin'): ?>
                         <a href="/project-urfarm/admin/dashboard.php">Dashboard</a>
                         <?php endif; ?>
-                        <a href="/project-urfarm/pages/riwayat_donasi.php">Riwayat Donasi</a>
+                        <a href="/project-urfarm/pages/donasi/riwayat.php">Riwayat Donasi</a>
                         <a href="/project-urfarm/auth/logout.php">Keluar</a>
                     </div>
                 </div>

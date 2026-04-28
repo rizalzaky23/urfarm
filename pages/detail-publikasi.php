@@ -33,6 +33,7 @@ $page = 'publikasi'; // For active navbar tab
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($artikel['judul']) ?> - UrFarm</title>
     <link rel="stylesheet" href="../css/detail-publikasi.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body>
 
@@ -57,12 +58,12 @@ $page = 'publikasi'; // For active navbar tab
             </div>
             <?php if (isset($_SESSION['user_id'])): ?>
                 <div class="dropdown">
-                    <a href="#">👤 <?= htmlspecialchars($_SESSION['user_nama']) ?> ▾</a>
+                    <a href="#"><i class="bi bi-person-circle"></i> <?= htmlspecialchars($_SESSION['user_nama']) ?> ▾</a>
                     <div class="dropdown-menu">
                         <?php if ($_SESSION['user_role'] === 'admin'): ?>
                         <a href="/project-urfarm/admin/dashboard.php">Dashboard</a>
                         <?php endif; ?>
-                        <a href="/project-urfarm/pages/riwayat_donasi.php">Riwayat Donasi</a>
+                        <a href="/project-urfarm/pages/donasi/riwayat.php">Riwayat Donasi</a>
                         <a href="/project-urfarm/auth/logout.php">Keluar</a>
                     </div>
                 </div>
@@ -79,10 +80,10 @@ $page = 'publikasi'; // For active navbar tab
         <h1 class="detail-title"><?= htmlspecialchars($artikel['judul']) ?></h1>
         <div class="detail-meta">
             <div class="meta-item">
-                📅 <?= date('d F Y', strtotime($artikel['tanggal_publikasi'])) ?>
+                <i class="bi bi-calendar-event"></i> <?= date('d F Y', strtotime($artikel['tanggal_publikasi'])) ?>
             </div>
             <div class="meta-item">
-                👤 <?= htmlspecialchars($artikel['nama_event'] ?? 'Tim UrFarm') ?>
+                <i class="bi bi-person"></i> <?= htmlspecialchars($artikel['nama_event'] ?? 'Tim UrFarm') ?>
             </div>
         </div>
     </section>

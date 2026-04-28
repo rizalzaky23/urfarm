@@ -18,8 +18,8 @@ if (!isset($_SESSION['user_id'])) {
     <meta name="description"
         content="Platform donasi lingkungan terpercaya untuk penghijauan Indonesia. Setiap donasi menjadi bibit nyata yang bisa kamu lacak.">
     <link rel="stylesheet" href="css/landing.css">
-    <!-- Leaflet CSS (OpenStreetMap - gratis, no API key) -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 
 <body>
@@ -45,12 +45,12 @@ if (!isset($_SESSION['user_id'])) {
             </div>
             <?php if (isset($_SESSION['user_id'])): ?>
                 <div class="dropdown">
-                    <a href="#">👤 <?= htmlspecialchars($_SESSION['user_nama']) ?> ▾</a>
+                    <a href="#"><i class="bi bi-person-circle"></i> <?= htmlspecialchars($_SESSION['user_nama']) ?> ▾</a>
                     <div class="dropdown-menu">
                         <?php if ($_SESSION['user_role'] === 'admin'): ?>
                         <a href="/project-urfarm/admin/dashboard.php">Dashboard</a>
                         <?php endif; ?>
-                        <a href="/project-urfarm/pages/riwayat_donasi.php">Riwayat Donasi</a>
+                        <a href="/project-urfarm/pages/donasi/riwayat.php">Riwayat Donasi</a>
                         <a href="/project-urfarm/auth/logout.php">Keluar</a>
                     </div>
                 </div>
@@ -77,7 +77,7 @@ if (!isset($_SESSION['user_id'])) {
                 Indonesia — satu bibit pada satu waktu.
             </p>
             <div class="hero-buttons">
-                <a href="#" class="btn-donasi">Donasi Sekarang</a>
+                <a href="/project-urfarm/pages/donasi/donasi.php" class="btn-donasi">Donasi Sekarang</a>
             </div>
         </div>
         <!-- Wave bottom -->
@@ -136,7 +136,7 @@ if (!isset($_SESSION['user_id'])) {
                         <div class="mini-label">Hutan Pertanian Ha</div>
                     </div>
                 </div>
-                <a href="#" class="btn-contribute">Mari Berkontribusi</a>
+                <a href="/project-urfarm/pages/donasi/donasi.php" class="btn-contribute">Mari Berkontribusi</a>
             </div>
             <!-- Right: Image -->
             <div class="about-img-wrap">
@@ -249,10 +249,10 @@ if (!isset($_SESSION['user_id'])) {
             <div>
                 <div class="footer-heading">Navigasi</div>
                 <div class="footer-links">
-                    <a href="landing.php">Home</a>
-                    <a href="pages/program.php">Program</a>
-                    <a href="#">Partner</a>
-                    <a href="pages/publikasi.php">Publikasi</a>
+                    <a href="/project-urfarm/landing.php">Home</a>
+                    <a href="/project-urfarm/pages/program.php">Program</a>
+                    <a href="/project-urfarm/pages/partner.php">Partner</a>
+                    <a href="/project-urfarm/pages/publikasi.php">Publikasi</a>
                 </div>
             </div>
             <div>
@@ -364,7 +364,7 @@ if (!isset($_SESSION['user_id'])) {
             </div>
             <div class="result-row">
                 <span class="result-label">Status</span>
-                <span class="status-badge">🌱 Tumbuh Aktif</span>
+                <span class="status-badge"><i class="bi bi-tree-fill"></i> Tumbuh Aktif</span>
             </div>
             <div class="result-row">
                 <span class="result-label">Tanggal Tanam</span>
@@ -441,13 +441,13 @@ if (!isset($_SESSION['user_id'])) {
                 ? new Date(d.tanggal).toLocaleDateString('id-ID', { day:'numeric', month:'long', year:'numeric' })
                 : '—';
             const badge = isTumbuh
-                ? `<span style="background:#d8f3dc;color:#1a4a35;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:700;">🌱 Tumbuh Aktif</span>`
-                : `<span style="background:#fff3cd;color:#856404;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:700;">🌿 Benih Baru</span>`;
+                ? `<span style="background:#d8f3dc;color:#1a4a35;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:700;"><i class="bi bi-tree-fill"></i> Tumbuh Aktif</span>`
+                : `<span style="background:#fff3cd;color:#856404;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:700;"><i class="bi bi-tree"></i> Benih Baru</span>`;
 
             return `
                 <div style="font-family:'DM Sans',sans-serif;min-width:220px;padding:2px;">
                     <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid #eef2f0;">
-                        <div style="width:32px;height:32px;border-radius:50%;background:#d8f3dc;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;">🌳</div>
+                        <div style="width:32px;height:32px;border-radius:50%;background:#d8f3dc;display:flex;align-items:center;justify-content:center;font-size:15px;color:#1a4a35;flex-shrink:0;"><i class="bi bi-tree-fill"></i></div>
                         <div>
                             <div style="font-weight:700;color:#1a4a35;font-size:13px;line-height:1.2;">${d.nama_event || 'Event Penanaman'}</div>
                             <div style="font-size:11px;color:#8a9e94;">${d.jenis_event || ''}</div>

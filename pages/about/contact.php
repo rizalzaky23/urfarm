@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <?php if ($_SESSION['user_role'] === 'admin'): ?>
                             <a href="/project-urfarm/admin/dashboard.php" class="dd-a">Dashboard</a>
                         <?php endif; ?>
-                        <a href="/project-urfarm/pages/riwayat_donasi.php" class="dd-a">Riwayat Donasi</a>
+                        <a href="/project-urfarm/pages/donasi/riwayat.php" class="dd-a">Riwayat Donasi</a>
                         <a href="/project-urfarm/auth/logout.php" class="dd-a">Keluar</a>
                     </div>
                 </div>
