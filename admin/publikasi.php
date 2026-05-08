@@ -1,11 +1,7 @@
 <?php
 session_start();
 
-// db config
-$conn = new mysqli("20.39.192.91", "urfarm", "", "urfarm_db");
-$conn->set_charset("utf8mb4");
-if ($conn->connect_error) die("Koneksi gagal: " . $conn->connect_error);
-
+require_once '../config/connection.php';
 // upload config
 define('UPLOAD_DIR', 'uploads/publikasi/');
 if (!is_dir(UPLOAD_DIR)) mkdir(UPLOAD_DIR, 0755, true);
@@ -137,7 +133,7 @@ function style($jenis) {
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="publikasi.css">
+<link rel="stylesheet" href="css/publikasi.css">
 </head>
 <body>
 
@@ -157,7 +153,7 @@ function style($jenis) {
     <div class="nav-section-label">Konten</div>
     <a href="kode.php"      class="nav-item"><i class="bi bi-qr-code"></i> Kode</a>
     <a href="publikasi.php" class="nav-item active"><i class="bi bi-newspaper"></i> Publikasi</a>
-    <a href="kontak.php"    class="nav-item"><i class="bi bi-chat-dots-fill"></i> Kontak Masuk</a>
+    <a href="kontakMasuk.php"    class="nav-item"><i class="bi bi-chat-dots-fill"></i> Kontak Masuk</a>
   </nav>
   <div class="sidebar-footer">
     <div class="admin-info">

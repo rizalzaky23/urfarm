@@ -1,21 +1,16 @@
 <?php
 session_start();
-// if (!isset($_SESSION['user_id'])) { header('Location: login.php'); exit; }
 
-// ── DB ──────────────────────────────────────────────────────────
-$conn = new mysqli('localhost', 'root', '', 'urfarm_db');
-$conn->set_charset('utf8mb4');
+require_once '../config/connection.php';
 
-// ── HELPERS ─────────────────────────────────────────────────────
 function h($v){ return htmlspecialchars((string)($v??''), ENT_QUOTES, 'UTF-8'); }
 function qrow($c,$s){ $r=$c->query($s); return $r?$r->fetch_assoc():null; }
 function qall($c,$s){ $r=$c->query($s); $d=[]; if($r) while($row=$r->fetch_assoc()) $d[]=$row; return $d; }
-function badge($s){
+function badgeStatus($s){
     return match($s){
-        'digunakan'=>'<span class="badge b-b">Digunakan</span>',
-        'aktif'    =>'<span class="badge b-y">Aktif</span>',
-        'nonaktif' =>'<span class="badge b-r">Nonaktif</span>',
-        default    =>'<span class="badge b-x">'.h($s).'</span>',
+        'tumbuh'     =>'<span class="badge b-b">Tumbuh</span>',
+        'benih baru' =>'<span class="badge b-y">Benih Baru</span>',
+        default      =>'<span class="badge b-x">'.h($s).'</span>',
     };
 }
 function fdate($d){ return $d ? date('d M Y',strtotime($d)) : '—'; }
@@ -27,48 +22,58 @@ if ($_SERVER['REQUEST_METHOD']==='POST'){
     $action = $_POST['action'] ?? '';
 
     if ($action==='generate'){
-        $id_b = (int)($_POST['id_bibit']??0);
-        $id_e = (int)($_POST['id_event']??0);
-        $id_p = (int)($_POST['id_penanaman']??0);
-        $qty  = min(100, max(1,(int)($_POST['jumlah']??1)));
+        $id_titik = trim($_POST['id_titik'] ?? '');
+        $qty      = min(100, max(1,(int)($_POST['jumlah']??1)));
 
-        if ($id_b && $id_e && $id_p){
+        if ($id_titik){
             $ok = 0;
-            $stmt = $conn->prepare("INSERT INTO kode(kode,id_bibit,id_event,id_penanaman,status,tgl_generate) VALUES(?,?,?,?,'aktif',NOW())");
-            for($i=0;$i<$qty;$i++){
+            // auto-generate id_kode: K0001, K0002, dst
+            $last = qrow($conn, "SELECT id_kode FROM kode_titik ORDER BY id_kode DESC LIMIT 1");
+            $lastNum = $last ? (int)substr($last['id_kode'], 1) : 0;
+
+            $stmt = $conn->prepare("INSERT INTO kode_titik(id_kode, id_titik, kode_unik) VALUES(?,?,?)");
+            for($i=0; $i<$qty; $i++){
+                $lastNum++;
+                $id_kode = 'K'.str_pad($lastNum, 4, '0', STR_PAD_LEFT);
                 do {
-                    $kode='UFM-'.strtoupper(substr(md5(uniqid(mt_rand(),true)),0,4));
-                    $dup=$conn->query("SELECT 1 FROM kode WHERE kode='".h($kode)."' LIMIT 1");
+                    $kode_unik = 'UFM-'.strtoupper(substr(md5(uniqid(mt_rand(),true)),0,8));
+                    $dup = $conn->query("SELECT 1 FROM kode_titik WHERE kode_unik='".h($kode_unik)."' LIMIT 1");
                 } while($dup && $dup->num_rows);
-                $stmt->bind_param('siii',$kode,$id_b,$id_e,$id_p);
+                $stmt->bind_param('sss', $id_kode, $id_titik, $kode_unik);
                 if($stmt->execute()) $ok++;
             }
             $stmt->close();
             $msg="$ok kode berhasil di-generate!"; $msg_type='s';
         } else {
-            $msg='Lengkapi semua field.'; $msg_type='e';
+            $msg='Pilih titik lokasi terlebih dahulu.'; $msg_type='e';
         }
     }
 
     if ($action==='hapus'){
-        $id=(int)($_POST['id_kode']??0);
-        if($id){ $conn->query("DELETE FROM kode WHERE id_kode=$id"); }
+        $id = trim($_POST['id_kode'] ?? '');
+        if($id){
+            $stmt = $conn->prepare("DELETE FROM kode_titik WHERE id_kode=?");
+            $stmt->bind_param('s', $id);
+            $stmt->execute(); $stmt->close();
+        }
         $msg='Kode dihapus.'; $msg_type='e';
     }
 }
 
 // ── DROPDOWN DATA ────────────────────────────────────────────────
-$events   = qall($conn,"SELECT id_event, nama_evet AS nm FROM event ORDER BY nm");
-$bibit    = qall($conn,"SELECT id_bibit, jenis_pohon AS nm, nama_pohon FROM bibit ORDER BY nm");
-$penaman  = qall($conn,"SELECT p.id_penanaman, p.lokasi, e.nama_evet AS nm_event FROM penanaman p LEFT JOIN event e ON p.id_event=e.id_event ORDER BY p.lokasi");
+$events  = qall($conn, "SELECT id_event, nama_evet AS nm FROM event ORDER BY nm");
+$titiks  = qall($conn, "SELECT tl.id_titik, tl.status, e.nama_evet AS nm_event
+                         FROM titik_lokasi tl
+                         LEFT JOIN event e ON tl.id_event = e.id_event
+                         ORDER BY tl.id_titik");
 
 // ── STATS ────────────────────────────────────────────────────────
-$stats = qrow($conn,"SELECT COUNT(*) total, SUM(status='digunakan') dig, SUM(status='aktif') aktif FROM kode") ?? [];
+$stats = qrow($conn, "SELECT COUNT(*) total FROM kode_titik") ?? [];
+$stats['total'] = $stats['total'] ?? 0;
 
 // ── FILTER + PAGINATE ────────────────────────────────────────────
 $q      = trim($_GET['q']??'');
-$fs     = $_GET['status']??'';
-$fe     = (int)($_GET['id_event']??0);
+$fe     = trim($_GET['id_event']??'');
 $page   = max(1,(int)($_GET['page']??1));
 $limit  = 10;
 $offset = ($page-1)*$limit;
@@ -78,22 +83,17 @@ $bind_t=''; $bind_v=[];
 
 if($q!==''){
     $like="%$q%";
-    $where[]="(k.kode LIKE ? OR u.nama LIKE ?)";
-    $bind_t.='ss'; $bind_v[]=$like; $bind_v[]=$like;
+    $where[]="k.kode_unik LIKE ?";
+    $bind_t.='s'; $bind_v[]=$like;
 }
-if($fs!==''){
-    $where[]='k.status=?'; $bind_t.='s'; $bind_v[]=$fs;
-}
-if($fe>0){
-    $where[]='k.id_event=?'; $bind_t.='i'; $bind_v[]=$fe;
+if($fe!==''){
+    $where[]='tl.id_event=?'; $bind_t.='s'; $bind_v[]=$fe;
 }
 $wh=implode(' AND ',$where);
 
-$base_sql="FROM kode k
-    LEFT JOIN event     e ON k.id_event=e.id_event
-    LEFT JOIN bibit     b ON k.id_bibit=b.id_bibit
-    LEFT JOIN penanaman p ON k.id_penanaman=p.id_penanaman
-    LEFT JOIN users     u ON k.id_user=u.id_user
+$base_sql="FROM kode_titik k
+    LEFT JOIN titik_lokasi tl ON k.id_titik = tl.id_titik
+    LEFT JOIN event        e  ON tl.id_event = e.id_event
     WHERE $wh";
 
 // total rows
@@ -103,12 +103,12 @@ $cs->execute(); $total=$cs->get_result()->fetch_assoc()['c']??0; $cs->close();
 $pages=max(1,ceil($total/$limit));
 
 // rows
-$ds=$conn->prepare("SELECT k.id_kode,k.kode,k.status,k.tgl_generate,b.jenis_pohon,b.nama_pohon,e.nama_evet nm_event,p.lokasi,u.nama nm_user $base_sql ORDER BY k.tgl_generate DESC LIMIT ? OFFSET ?");
+$ds=$conn->prepare("SELECT k.id_kode, k.kode_unik, k.id_titik, tl.status, tl.longtitude, tl.latitude, e.id_event, e.nama_evet nm_event $base_sql ORDER BY k.id_kode DESC LIMIT ? OFFSET ?");
 $dt=$bind_t.'ii'; $dv=array_merge($bind_v,[$limit,$offset]);
 $ds->bind_param($dt,...$dv); $ds->execute();
 $rows=$ds->get_result()->fetch_all(MYSQLI_ASSOC); $ds->close();
-$conn->close();
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -116,7 +116,7 @@ $conn->close();
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>UrFarm — Kode</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-<link rel="stylesheet" href="kode.css">
+<link rel="stylesheet" href="css/kode.css">
 </head>
 <body>
 
@@ -136,7 +136,7 @@ $conn->close();
     <div class="s-sec">Konten</div>
     <a class="nav-item active" href="kode.php"><i class="bi bi-qr-code"></i>Kode</a>
     <a class="nav-item" href="publikasi.php"><i class="bi bi-newspaper"></i>Publikasi</a>
-    <a class="nav-item" href="kontak.php"><i class="bi bi-envelope"></i>Kontak Masuk<span class="nav-badge">5</span></a>
+    <a class="nav-item" href="kontakMasuk.php"><i class="bi bi-envelope"></i>Kontak Masuk<span class="nav-badge">5</span></a>
   </nav>
   <div class="s-foot">
     <div class="admin-box">
@@ -173,8 +173,8 @@ $conn->close();
     <!-- STATS -->
     <div class="stats">
       <div class="stat"><div class="stat-ic ic-g"><i class="bi bi-qr-code"></i></div><div><div class="stat-val"><?= number_format($stats['total']??0) ?></div><div class="stat-lbl">Total Kode</div></div></div>
-      <div class="stat"><div class="stat-ic ic-b"><i class="bi bi-check2-circle"></i></div><div><div class="stat-val"><?= number_format($stats['dig']??0) ?></div><div class="stat-lbl">Sudah Digunakan</div></div></div>
-      <div class="stat"><div class="stat-ic ic-a"><i class="bi bi-hourglass-split"></i></div><div><div class="stat-val"><?= number_format($stats['aktif']??0) ?></div><div class="stat-lbl">Belum Digunakan</div></div></div>
+      <div class="stat"><div class="stat-ic ic-b"><i class="bi bi-geo-alt"></i></div><div><div class="stat-val"><?= count($titiks) ?></div><div class="stat-lbl">Titik Lokasi</div></div></div>
+      <div class="stat"><div class="stat-ic ic-a"><i class="bi bi-calendar-event"></i></div><div><div class="stat-val"><?= count($events) ?></div><div class="stat-lbl">Total Event</div></div></div>
     </div>
 
     <!-- TABLE CARD -->
@@ -188,21 +188,15 @@ $conn->close();
         <div class="filter">
           <div class="search">
             <i class="bi bi-search"></i>
-            <input name="q" placeholder="Cari kode atau pengguna..." value="<?= h($q) ?>" oninput="dbs()">
+            <input name="q" placeholder="Cari kode unik..." value="<?= h($q) ?>" oninput="dbs()">
           </div>
-          <select class="fsel" name="status" onchange="this.form.submit()">
-            <option value="">Semua Status</option>
-            <option value="aktif"     <?= $fs==='aktif'?'selected':'' ?>>Belum Digunakan</option>
-            <option value="digunakan" <?= $fs==='digunakan'?'selected':'' ?>>Sudah Digunakan</option>
-            <option value="nonaktif"  <?= $fs==='nonaktif'?'selected':'' ?>>Nonaktif</option>
-          </select>
           <select class="fsel" name="id_event" onchange="this.form.submit()">
             <option value="">Semua Event</option>
             <?php foreach($events as $e): ?>
             <option value="<?= $e['id_event'] ?>" <?= $fe===$e['id_event']?'selected':'' ?>><?= h($e['nm']) ?></option>
             <?php endforeach; ?>
           </select>
-          <?php if($q||$fs||$fe): ?>
+          <?php if($q||$fe): ?>
           <a href="kode.php" class="btn btn-o sm"><i class="bi bi-x-lg"></i>Reset</a>
           <?php endif; ?>
         </div>
@@ -212,32 +206,25 @@ $conn->close();
       <div class="empty"><i class="bi bi-qr-code"></i><p>Tidak ada kode yang ditemukan.</p></div>
       <?php else: ?>
       <table class="tbl">
-        <thead><tr><th>Kode</th><th>Bibit</th><th>Event</th><th>Lokasi</th><th>Pengguna</th><th>Tgl Generate</th><th>Status</th><th>Aksi</th></tr></thead>
+        <thead><tr><th>ID Kode</th><th>Kode Unik</th><th>Titik</th><th>Event</th><th>Status Titik</th><th>Koordinat</th><th>Aksi</th></tr></thead>
         <tbody>
         <?php foreach($rows as $r): ?>
         <tr>
-          <td><span class="chip"><?= h($r['kode']) ?></span></td>
-          <td>
-            <div style="font-weight:600"><?= h($r['jenis_pohon']??'—') ?></div>
-            <?php if($r['nama_pohon']): ?><div style="font-size:11px;color:var(--muted)"><?= h($r['nama_pohon']) ?></div><?php endif; ?>
-          </td>
+          <td><span style="font-family:monospace;font-size:12px;color:var(--muted)"><?= h($r['id_kode']) ?></span></td>
+          <td><span class="chip"><?= h($r['kode_unik']) ?></span></td>
+          <td><?= h($r['id_titik'] ?? '—') ?></td>
           <td><?= h($r['nm_event']??'—') ?></td>
-          <td><?= h($r['lokasi']??'—') ?></td>
-          <td>
-            <?php if($r['nm_user']): ?>
-            <div style="display:flex;align-items:center;gap:6px">
-              <div class="avatar" style="width:26px;height:26px;font-size:10px;background:var(--blue)"><?= strtoupper(substr($r['nm_user'],0,2)) ?></div>
-              <span style="font-size:12px"><?= h($r['nm_user']) ?></span>
-            </div>
-            <?php else: ?><span style="font-size:12px;color:var(--muted)">— Belum dipakai</span><?php endif; ?>
+          <td><?= badgeStatus($r['status']??'') ?></td>
+          <td style="font-size:11px;color:var(--muted)">
+            <?php if($r['latitude'] && $r['longtitude']): ?>
+            <?= number_format($r['latitude'],4) ?>, <?= number_format($r['longtitude'],4) ?>
+            <?php else: ?>—<?php endif; ?>
           </td>
-          <td style="font-size:12px;color:var(--muted)"><?= fdate($r['tgl_generate']) ?></td>
-          <td><?= badge($r['status']) ?></td>
           <td>
             <div style="display:flex;gap:6px">
               <button class="btn btn-o sm ic" title="Detail" onclick='openDetail(<?= json_encode($r,JSON_HEX_QUOT) ?>)'><i class="bi bi-eye"></i></button>
-              <button class="btn btn-o sm ic" title="Salin" onclick="copy('<?= h($r['kode']) ?>')"><i class="bi bi-clipboard"></i></button>
-              <button class="btn-del" title="Hapus" onclick="konfHapus(<?= $r['id_kode'] ?>,'<?= h($r['kode']) ?>')"><i class="bi bi-trash"></i></button>
+              <button class="btn btn-o sm ic" title="Salin" onclick="copy('<?= h($r['kode_unik']) ?>')"><i class="bi bi-clipboard"></i></button>
+              <button class="btn-del" title="Hapus" onclick="konfHapus('<?= h($r['id_kode']) ?>','<?= h($r['kode_unik']) ?>')"><i class="bi bi-trash"></i></button>
             </div>
           </td>
         </tr>
@@ -277,45 +264,23 @@ $conn->close();
     </div>
     <form method="POST">
       <input type="hidden" name="action" value="generate">
-      <div class="row2">
-        <div class="fg">
-          <label class="lbl">Jenis Bibit *</label>
-          <select class="fc" name="id_bibit" required>
-            <option value="">Pilih Bibit...</option>
-            <?php foreach($bibit as $b): ?>
-            <option value="<?= $b['id_bibit'] ?>"><?= h($b['nm']) ?></option>
-            <?php endforeach; ?>
-          </select>
-        </div>
-        <div class="fg">
-          <label class="lbl">Event *</label>
-          <select class="fc" name="id_event" required>
-            <option value="">Pilih Event...</option>
-            <?php foreach($events as $e): ?>
-            <option value="<?= $e['id_event'] ?>"><?= h($e['nm']) ?></option>
-            <?php endforeach; ?>
-          </select>
-        </div>
-      </div>
       <div class="fg">
-        <label class="lbl">Lokasi Penanaman *</label>
-        <select class="fc" name="id_penanaman" required>
-          <option value="">Pilih Lokasi...</option>
-          <?php foreach($penaman as $p): ?>
-          <option value="<?= $p['id_penanaman'] ?>"><?= h($p['lokasi']) ?> — <?= h($p['nm_event']??'') ?></option>
+        <label class="lbl">Titik Lokasi *</label>
+        <select class="fc" name="id_titik" required>
+          <option value="">Pilih Titik Lokasi...</option>
+          <?php foreach($titiks as $t): ?>
+          <option value="<?= h($t['id_titik']) ?>"><?= h($t['id_titik']) ?> — <?= h($t['nm_event']??'Tanpa Event') ?> (<?= h($t['status']) ?>)</option>
           <?php endforeach; ?>
         </select>
       </div>
-      <div class="row2">
-        <div class="fg">
-          <label class="lbl">Jumlah Kode</label>
-          <input class="fc" type="number" name="jumlah" value="1" min="1" max="100" oninput="prvw()">
-          <div style="font-size:11px;color:var(--muted);margin-top:4px">Maks. 100 sekaligus</div>
-        </div>
-        <div class="fg">
-          <label class="lbl">Preview Format</label>
-          <div class="preview-box" id="prvw-box">UFM-????</div>
-        </div>
+      <div class="fg">
+        <label class="lbl">Jumlah Kode</label>
+        <input class="fc" type="number" name="jumlah" value="1" min="1" max="100" oninput="prvw()">
+        <div style="font-size:11px;color:var(--muted);margin-top:4px">Maks. 100 sekaligus</div>
+      </div>
+      <div class="fg">
+        <label class="lbl">Preview Format</label>
+        <div class="preview-box" id="prvw-box">UFM-????????</div>
       </div>
       <div class="modal-ft">
         <button type="button" class="btn btn-o" onclick="closeModal('m-gen')">Batal</button>
@@ -397,19 +362,17 @@ function prvw(){
 }
 
 // Detail
-const statMap={'aktif':'<span class="badge b-y">Aktif</span>','digunakan':'<span class="badge b-b">Digunakan</span>','nonaktif':'<span class="badge b-r">Nonaktif</span>'};
 const fdate=d=>d?new Date(d).toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'}):'—';
 
 function openDetail(d){
-  $('det-chip').textContent=d.kode;
-  $('det-copy').onclick=()=>copy(d.kode);
+  $('det-chip').textContent=d.kode_unik;
+  $('det-copy').onclick=()=>copy(d.kode_unik);
   const rows=[
-    ['Bibit', (d.jenis_pohon||'—')+(d.nama_pohon?` <span style="font-size:11px;color:var(--muted)">(${d.nama_pohon})</span>`:'')],
+    ['Kode Unik', d.kode_unik||'—'],
+    ['ID Titik', d.id_titik||'—'],
     ['Event', d.nm_event||'—'],
-    ['Lokasi', d.lokasi||'—'],
-    ['Pengguna', d.nm_user||'— Belum dipakai'],
-    ['Tgl Generate', fdate(d.tgl_generate)],
-    ['Status', statMap[d.status]||d.status],
+    ['Status Titik', d.status||'—'],
+    ['Koordinat', (d.latitude&&d.longtitude) ? d.latitude+', '+d.longtitude : '—'],
   ];
   $('det-body').innerHTML=rows.map(([l,v])=>`<div class="d-row"><div class="d-lbl">${l}</div><div>${v}</div></div>`).join('');
   openModal('m-det');

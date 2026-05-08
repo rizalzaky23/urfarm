@@ -27,15 +27,15 @@ $current = basename($_SERVER['PHP_SELF']);
 
   <div class="sidebar-section">Keuangan &amp; Lokasi</div>
   <nav class="sidebar-nav">
-    <a href="#"><i class="bi bi-wallet2"></i> Alokasi Dana</a>
-    <a href="#"><i class="bi bi-geo-alt-fill"></i> Lokasi &amp; Penanaman</a>
+    <a href="../alokasi.php"><i class="bi bi-wallet2"></i> Alokasi Dana</a>
+    <a href="../lokasi.php"><i class="bi bi-geo-alt-fill"></i> Lokasi &amp; Penanaman</a>
   </nav>
 
   <div class="sidebar-section">Konten</div>
   <nav class="sidebar-nav">
-    <a href="#"><i class="bi bi-key-fill"></i> Kode</a>
-    <a href="#"><i class="bi bi-newspaper"></i> Publikasi</a>
-    <a href="#">
+    <a href="kode.php" <?= $current==='kode.php'?'class="active"':'' ?>><i class="bi bi-key"></i> Kode</a>
+    <a href="publikasi.php" <?= $current==='publikasi.php'?'class="active"':'' ?>><i class="bi bi-newspaper"></i> Publikasi</a>
+    <a href="kontakMasuk.php" <?= $current==='kontakMasuk.php'?'class="active"':'' ?>>
       <i class="bi bi-envelope-fill"></i> Kontak Masuk
       <?php if($total_kontak > 0): ?>
       <span class="badge-count"><?= $total_kontak ?></span>
