@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($pass !== $confirm) {
         $error = 'Konfirmasi password tidak cocok.';
     } else {
-        // Cek email duplikat
+        // Cek email duplikat gaaa
         $check = $conn->prepare("SELECT id FROM users WHERE email = ?");
         $check->bind_param('s', $email);
         $check->execute();

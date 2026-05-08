@@ -14,7 +14,7 @@ $page = $_GET['page'] ?? 'home';
 </head>
 <body>
 
-<!-- NAVBAR -->
+<!-- nav -->
     <nav id="navbar">
         <div class="nav-brand">
     <div class="navbar-logo-icon"></div>
@@ -50,7 +50,7 @@ $page = $_GET['page'] ?? 'home';
         </div>
         <button class="menu-toggle" id="menuToggle">☰</button>
     </nav>
-
+<!-- eof nav -->
 <section class="hero-section">
     <div class="hero-bg" style="background-image: url('../assets/bg4.png');"></div>
     <div class="hero-content">

@@ -3,7 +3,6 @@ session_start();
 $page = $_GET['page'] ?? 'home';
 require_once '../config/connection.php';
 
-// Ambil semua publikasi, urutkan dari terbaru
 $query = "SELECT p.*, e.nama_evet AS nama_event, e.jenis_event 
           FROM publikasi p 
           LEFT JOIN event e ON p.id_event = e.id_event 
@@ -15,7 +14,6 @@ while ($row = $result->fetch_assoc()) {
     $publikasi[] = $row;
 }
 
-// Artikel pertama jadi highlight
 $highlight = !empty($publikasi) ? array_shift($publikasi) : null;
 ?>
 <!DOCTYPE html>
@@ -31,7 +29,7 @@ $highlight = !empty($publikasi) ? array_shift($publikasi) : null;
 
 <body>
 
-    <!-- NAVBAR -->
+    <!-- nav -->
     <nav id="navbar">
         <div class="nav-brand">
     <div class="navbar-logo-icon"></div>
@@ -67,6 +65,7 @@ $highlight = !empty($publikasi) ? array_shift($publikasi) : null;
         </div>
         <button class="menu-toggle" id="menuToggle">☰</button>
     </nav>
+    <!-- end nav -->
 
     <section class="pub-hero">
         <div class="pub-hero-overlay"></div>

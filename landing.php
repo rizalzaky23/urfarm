@@ -2,7 +2,6 @@
 session_start();
 $page = $_GET['page'] ?? 'home';
 
-// Proteksi: harus login untuk mengakses
 if (!isset($_SESSION['user_id'])) {
     header('Location: auth/login.php');
     exit;
@@ -24,7 +23,7 @@ if (!isset($_SESSION['user_id'])) {
 
 <body>
 
-    <!-- NAVBAR -->
+    <!-- nav -->
     <nav id="navbar">
         <div class="nav-brand">
     <div class="navbar-logo-icon"></div>
@@ -60,8 +59,9 @@ if (!isset($_SESSION['user_id'])) {
         </div>
         <button class="menu-toggle" id="menuToggle">☰</button>
     </nav>
+    <!-- end nav -->
 
-    <!-- ===== HERO ===== -->
+    <!-- hero -->
     <section id="hero">
         <div class="hero-bg"></div>
         <div class="hero-overlay"></div>
@@ -87,8 +87,8 @@ if (!isset($_SESSION['user_id'])) {
             </svg>
         </div>
     </section>
+    <!-- end hero -->
 
-    <!-- ===== STATS ===== -->
     <section id="stats">
         <div class="stats-grid">
             <div class="stat-item">
@@ -108,7 +108,6 @@ if (!isset($_SESSION['user_id'])) {
         </div>
     </section>
 
-    <!-- ===== ABOUT ===== -->
     <section id="about">
         <div class="about-container">
             <!-- Left: Text -->
@@ -138,14 +137,13 @@ if (!isset($_SESSION['user_id'])) {
                 </div>
                 <a href="/project-urfarm/pages/donasi/donasi.php" class="btn-contribute">Mari Berkontribusi</a>
             </div>
-            <!-- Right: Image -->
             <div class="about-img-wrap">
                 <img src="assets/img5.png" alt="Hutan Indonesia dari atas">
             </div>
         </div>
     </section>
 
-    <!-- ===== WHY PLANT ===== -->
+
     <section id="why-plant">
         <div class="why-inner">
             <span class="badge-pill badge-outline">Kenapa Harus Menanam Pohon?</span>
@@ -196,7 +194,6 @@ if (!isset($_SESSION['user_id'])) {
         </div>
     </section>
 
-    <!-- ===== TRACK SEED ===== -->
     <section id="track-seed">
         <div class="track-inner">
             <span class="badge-pill badge-outline">Lacak Bibit</span>
@@ -212,7 +209,7 @@ if (!isset($_SESSION['user_id'])) {
         </div>
     </section>
 
-    <!-- ===== MAP ===== -->
+<!-- mapss -->
     <section id="map-section">
         <div class="map-inner">
             <span class="badge-pill badge-outline">Peta Penanaman</span>
@@ -221,7 +218,6 @@ if (!isset($_SESSION['user_id'])) {
             <div class="map-wrap">
                 <div id="gmap"></div>
             </div>
-            <!-- Legend -->
             <div class="map-legend">
                 <div class="legend-item">
                     <span class="legend-dot tumbuh"></span> Tumbuh Aktif
@@ -234,7 +230,7 @@ if (!isset($_SESSION['user_id'])) {
     </section>
 
 
-    <!-- ===== FOOTER ===== -->
+<!-- footer -->
     <footer>
         <div class="footer-grid">
             <div class="footer-brand">
@@ -299,17 +295,15 @@ if (!isset($_SESSION['user_id'])) {
     </footer>
 
     <script>
-        // Navbar scroll effect
+        //nvbar scroll effect
         window.addEventListener('scroll', () => {
             document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 10);
         });
 
-        // Mobile menu
         document.getElementById('menuToggle').addEventListener('click', () => {
             document.getElementById('navLinks').classList.toggle('mobile-open');
         });
 
-        // Counter animation with Intersection Observer
         function animateCounter(id, target, prefix, suffix, duration) {
             const el = document.getElementById(id);
             if (!el) return;
@@ -335,7 +329,6 @@ if (!isset($_SESSION['user_id'])) {
         }, { threshold: 0.4 });
         statsObserver.observe(document.getElementById('stats'));
 
-        // Track seed
         function lacakBenih() {
             const code = document.getElementById('seed-code').value.trim().toUpperCase();
             const result = document.getElementById('track-result');
@@ -379,7 +372,7 @@ if (!isset($_SESSION['user_id'])) {
             if (e.key === 'Enter') lacakBenih();
         });
 
-        // Scroll-reveal cards
+
         const revealEls = document.querySelectorAll('.why-card, .mini-stat, .about-img-wrap');
         const revealObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -392,11 +385,10 @@ if (!isset($_SESSION['user_id'])) {
         revealEls.forEach(el => revealObserver.observe(el));
     </script>
 
-    <!-- ===== LEAFLET JS + OPENSTREETMAP (GRATIS) ===== -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
     window.addEventListener('load', async function() {
-        // Inisialisasi peta Leaflet dengan OpenStreetMap
+        //inisialisasi peta Leaflet
         const map = L.map('gmap', {
             center: [-2.5, 118.0],
             zoom: 6,
@@ -404,16 +396,15 @@ if (!isset($_SESSION['user_id'])) {
             attributionControl: true,
         });
 
-        // Layer tile OpenStreetMap (gratis, no API key)
+        //layer tile OpenStreetMap
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors',
             maxZoom: 19,
         }).addTo(map);
 
-        // Force Leaflet recalculate ukuran container (fix blank map)
         setTimeout(() => map.invalidateSize(), 100);
 
-        // Fungsi buat custom SVG marker
+        //costum SVG
         function createIcon(isTumbuh) {
             const color  = isTumbuh ? '#2d6a4f' : '#d4a84b';
             const shadow = isTumbuh ? 'rgba(45,106,79,0.35)' : 'rgba(212,168,75,0.35)';
@@ -434,7 +425,6 @@ if (!isset($_SESSION['user_id'])) {
             });
         }
 
-        // Fungsi buat konten popup
         function buildPopup(d) {
             const isTumbuh = d.status === 'tumbuh';
             const tanggal  = d.tanggal
@@ -464,7 +454,7 @@ if (!isset($_SESSION['user_id'])) {
                 </div>`;
         }
 
-        // Ambil data dari API dan tambah marker
+        //ambil data dari api
         try {
             const res  = await fetch('api/titik_lokasi.php');
             const json = await res.json();
@@ -481,13 +471,13 @@ if (!isset($_SESSION['user_id'])) {
                     title: d.lokasi || d.id_titik,
                 });
 
-                // Tooltip saat hover
+                //tooltip saat hover
                 marker.bindTooltip(
                     `<strong>${d.id_titik}</strong><br>${d.lokasi || ''}`,
                     { direction: 'top', offset: [0, -38], className: 'urfarm-tooltip' }
                 );
 
-                // Popup saat diklik
+                //popup
                 marker.bindPopup(buildPopup(d), {
                     maxWidth: 280,
                     className: 'urfarm-popup',

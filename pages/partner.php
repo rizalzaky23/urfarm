@@ -14,7 +14,7 @@ $page = $_GET['page'] ?? 'home';
 
 <body>
 
-    <!-- NAVBAR -->
+    <!-- nav -->
     <nav id="navbar">
         <div class="nav-brand">
     <div class="navbar-logo-icon"></div>
@@ -50,7 +50,7 @@ $page = $_GET['page'] ?? 'home';
         </div>
         <button class="menu-toggle" id="menuToggle">☰</button>
     </nav>
-
+<!-- eof naf -->
     <section class="partner-hero">
         <div class="partner-hero-overlay"></div>
         <div class="partner-hero-content">

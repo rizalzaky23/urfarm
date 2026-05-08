@@ -2,7 +2,6 @@
 session_start();
 require_once '../config/connection.php';
 
-// Jika sudah login, redirect sesuai role
 if (isset($_SESSION['user_id'])) {
     if ($_SESSION['user_role'] === 'admin') {
         header('Location: ../admin/dashboard.php');
@@ -15,19 +14,19 @@ if (isset($_SESSION['user_id'])) {
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $role  = $_POST['role'] ?? 'donatur';
+    $role = $_POST['role'] ?? 'donatur';
     $email = trim($_POST['email'] ?? '');
-    $pass  = $_POST['password'] ?? '';
+    $pass = $_POST['password'] ?? '';
 
     if ($email && $pass) {
         $stmt = $conn->prepare("SELECT id, nama, email, password, role FROM users WHERE email = ? AND role = ?");
         $stmt->bind_param('ss', $email, $role);
         $stmt->execute();
         $result = $stmt->get_result();
-        $user   = $result->fetch_assoc();
+        $user = $result->fetch_assoc();
         $stmt->close();
         if ($user && hash('sha256', $pass) === $user['password']) {
-            $_SESSION['user_id']   = $user['id'];
+            $_SESSION['user_id'] = $user['id'];
             $_SESSION['user_nama'] = $user['nama'];
             $_SESSION['user_role'] = $user['role'];
 
@@ -38,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     unset($_SESSION['redirect_to']);
                     header('Location: ../pages/about/contact.php');
                 } else {
-                    header('Location: ../landing.php'); // donatur redirect ke landing page
+                    header('Location: ../landing.php');
                 }
             }
             exit;
@@ -65,14 +64,12 @@ $active_tab = $_GET['tab'] ?? 'donatur';
 <div class="auth-page">
     <div class="auth-wrapper">
 
-        <!-- Logo -->
         <div class="auth-logo-bar">
             <a href="../index.php" style="text-decoration:none;">
                 <span class="logo-text">Ur<span>Farm</span></span>
             </a>
         </div>
 
-        <!-- Tabs -->
         <div class="auth-tabs">
             <button class="auth-tab-btn <?= $active_tab === 'donatur' ? 'active' : '' ?>"
                     onclick="switchTab('donatur')">Donatur</button>
@@ -80,7 +77,6 @@ $active_tab = $_GET['tab'] ?? 'donatur';
                     onclick="switchTab('admin')">Admin</button>
         </div>
 
-        <!-- Card -->
         <div class="auth-box">
             <div class="auth-body">
                 <h1 class="auth-heading" id="auth-heading">
@@ -129,18 +125,18 @@ $active_tab = $_GET['tab'] ?? 'donatur';
 
         document.getElementById('role-input').value = tab;
 
-        const heading    = document.getElementById('auth-heading');
+        const heading = document.getElementById('auth-heading');
         const subheading = document.getElementById('auth-subheading');
-        const regLink    = document.getElementById('register-link');
+        const regLink = document.getElementById('register-link');
 
         if (tab === 'admin') {
-            heading.textContent    = 'Halo, Admin!';
+            heading.textContent = 'Halo, Admin!';
             subheading.textContent = 'Silahkan masuk untuk mengelola UrFarm.';
-            regLink.style.display  = 'none';
+            regLink.style.display= 'none';
         } else {
-            heading.textContent    = 'Halo, UFams!';
+            heading.textContent = 'Halo, UFams!';
             subheading.textContent = 'Silahkan Sign in untuk melanjutkan ke UrFarm sebagai Donatur.';
-            regLink.style.display  = 'block';
+            regLink.style.display = 'block';
         }
     }
 </script>

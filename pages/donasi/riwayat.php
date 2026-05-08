@@ -1,8 +1,4 @@
 <?php
-/**
- * riwayat.php — Riwayat Donasi User
- * Menampilkan semua riwayat donasi milik user yang sedang login
- */
 session_start();
 require_once '../../config/connection.php';
 
@@ -13,7 +9,6 @@ if (!isset($_SESSION['user_id'])) {
 
 $id_users = (int) $_SESSION['user_id'];
 
-// Ambil semua donasi milik user ini, beserta info alokasi jika ada
 $stmt = $conn->prepare("
     SELECT
         d.id_donasi,
@@ -42,12 +37,11 @@ $riwayat = $result->fetch_all(MYSQLI_ASSOC);
 $stmt->close();
 $conn->close();
 
-// Helper: format rupiah
+//format idr
 function rupiah(int $n): string {
     return 'Rp ' . number_format($n, 0, ',', '.');
 }
 
-// Helper: badge status
 function statusBadge(string $status): string {
     return match($status) {
         'verified'  => '<span class="badge badge-verified"><i class="bi bi-check-circle-fill"></i> Terverifikasi</span>',
@@ -61,7 +55,7 @@ function statusBadge(string $status): string {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Riwayat Donasi — UrFarm</title>
+    <title>Riwayat Donasi - UrFarm</title>
     <meta name="description" content="Lihat semua riwayat donasi kamu di UrFarm.">
     <link rel="stylesheet" href="../../css/donasi.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
