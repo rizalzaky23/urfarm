@@ -2,23 +2,21 @@
 session_start();
 require_once '../../config/connection.php';
 
-// Redirect to login if user is not logged in
 if (!isset($_SESSION['user_id'])) {
     $_SESSION['redirect_to'] = 'contact';
     header('Location: ../../auth/login.php');
     exit;
 }
 
+$user_id = $_SESSION['user_id'];
 $success = false;
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $pesan = trim($_POST['pesan'] ?? '');
-    $id_users = $_SESSION['user_id'] ?? null;
-
     if ($pesan !== '') {
-        $stmt = $conn->prepare("INSERT INTO contact (id_users, pesan) VALUES (?, ?)");
-        $stmt->bind_param('is', $id_users, $pesan);
+        $stmt = $conn->prepare("INSERT INTO contact (id_users, pesan, pengirim) VALUES (?, ?, 'user')");
+        $stmt->bind_param('is', $user_id, $pesan);
         if ($stmt->execute()) {
             $success = true;
         } else {
@@ -29,6 +27,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'Pesan tidak boleh kosong.';
     }
 }
+
+// Fetch conversation thread
+$messages = [];
+$st = $conn->prepare("SELECT id_contact, pesan, pengirim FROM contact WHERE id_users = ? ORDER BY id_contact ASC");
+$st->bind_param('i', $user_id);
+$st->execute();
+$res = $st->get_result();
+while ($row = $res->fetch_assoc()) $messages[] = $row;
+$st->close();
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -121,14 +128,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
             </div>
 
-            <!-- Right Form Card -->
+            <!-- Right: Chat Card -->
             <div class="contact-form-card">
-                <div class="badge-title">PESAN</div>
-                <form method="POST" action="contact.php">
-                    <textarea name="pesan" placeholder="ketik pesan..." required></textarea>
-                    <div class="form-footer">
-                        <button type="submit" class="btn-kirim">KIRIM</button>
-                    </div>
+                <div class="badge-title">PERCAKAPAN</div>
+
+                <!-- Chat Thread -->
+                <div class="chat-thread" id="chatThread">
+                    <?php if (empty($messages)): ?>
+                        <div class="chat-empty">
+                            <span style="font-size:32px;opacity:.3;">💬</span>
+                            <p>Belum ada percakapan. Kirim pesan pertama Anda!</p>
+                        </div>
+                    <?php else: ?>
+                        <?php foreach ($messages as $msg):
+                            $is_admin = $msg['pengirim'] === 'admin';
+                        ?>
+                        <div class="chat-msg <?= $is_admin ? 'admin' : 'me' ?>">
+                            <div class="chat-msg-sender"><?= $is_admin ? '🛡️ Admin UrFarm' : '👤 Anda' ?></div>
+                            <div class="chat-msg-text"><?= nl2br(htmlspecialchars($msg['pesan'])) ?></div>
+                        </div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </div>
+
+                <!-- Send Form -->
+                <form method="POST" action="contact.php" class="chat-send-bar">
+                    <textarea name="pesan" placeholder="Ketik pesan..." required></textarea>
+                    <button type="submit" class="btn-kirim">KIRIM</button>
                 </form>
             </div>
         </div>
@@ -146,6 +172,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         document.getElementById('menuToggle').addEventListener('click', () => {
             document.getElementById('navLinks').classList.toggle('mobile-open');
         });
+
+        // Auto-scroll chat to bottom
+        const thread = document.getElementById('chatThread');
+        if (thread) thread.scrollTop = thread.scrollHeight;
     </script>
 </body>
 </html>

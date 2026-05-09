@@ -7,12 +7,27 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
     exit;
 }
 
+// Handle admin reply
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reply_uid'], $_POST['reply_msg'])) {
+    $reply_uid = intval($_POST['reply_uid']);
+    $reply_msg = trim($_POST['reply_msg']);
+    if ($reply_msg !== '' && $reply_uid > 0) {
+        $st = $conn->prepare("INSERT INTO contact (id_users, pesan, pengirim) VALUES (?, ?, 'admin')");
+        $st->bind_param('is', $reply_uid, $reply_msg);
+        $st->execute(); $st->close();
+    }
+    header('Location: kontakMasuk.php?uid=' . $reply_uid);
+    exit;
+}
+
 if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
     $id = intval($_GET['delete']);
     $stmt = $conn->prepare("DELETE FROM contact WHERE id_contact = ?");
     $stmt->bind_param('i', $id);
     $stmt->execute(); $stmt->close();
-    header('Location: kontakMasuk.php');
+    $redir = 'kontakMasuk.php';
+    if (isset($_GET['uid'])) $redir .= '?uid=' . intval($_GET['uid']);
+    header('Location: ' . $redir);
     exit;
 }
 
@@ -60,7 +75,7 @@ if ($active_uid) {
     $st_u->close();
 
     if ($selected_user) {
-        $st_m = $conn->prepare("SELECT id_contact, pesan FROM contact WHERE id_users = ? ORDER BY id_contact ASC");
+        $st_m = $conn->prepare("SELECT id_contact, pesan, pengirim FROM contact WHERE id_users = ? ORDER BY id_contact ASC");
         $st_m->bind_param('i', $active_uid);
         $st_m->execute();
         $res_m = $st_m->get_result();
@@ -194,26 +209,28 @@ function getColor($name, $colors) {
                         </div>
                     </div>
                 </div>
-                <div class="inbox-detail-body">
-                    <?php foreach ($active_messages as $msg): ?>
-                        <div class="msg-thread-item" style="margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 15px;">
-                            <div style="font-size: 13px; color: var(--text); line-height: 1.6;">
-                                <?= nl2br(htmlspecialchars($msg['pesan'])) ?>
-                            </div>
-                            <div style="display: flex; justify-content: flex-end; margin-top: 8px;">
+                <div class="inbox-detail-body" id="chat-body">
+                    <?php foreach ($active_messages as $msg):
+                        $is_admin = ($msg['pengirim'] ?? 'user') === 'admin';
+                    ?>
+                        <div class="chat-bubble <?= $is_admin ? 'admin' : 'user' ?>">
+                            <div class="chat-sender"><?= $is_admin ? '🛡️ Admin' : htmlspecialchars($selected_user['nama']) ?></div>
+                            <div class="chat-text"><?= nl2br(htmlspecialchars($msg['pesan'])) ?></div>
+                            <div class="chat-actions">
                                 <button class="btn-admin danger" style="padding: 2px 8px; font-size: 11px;" onclick="confirmDelete(<?= $msg['id_contact'] ?>)">
-                                    <i class="bi bi-trash"></i> Hapus
+                                    <i class="bi bi-trash"></i>
                                 </button>
                             </div>
                         </div>
                     <?php endforeach; ?>
                 </div>
-                <div class="inbox-reply-bar">
-                    <textarea class="inbox-reply-input" placeholder="Balas via email manual ke: <?= htmlspecialchars($selected_user['email']) ?>"></textarea>
-                    <button class="btn-admin primary" onclick="showToast('Buka email client Anda untuk membalas ke <?= htmlspecialchars($selected_user['email']) ?>')">
+                <form method="POST" class="inbox-reply-bar">
+                    <input type="hidden" name="reply_uid" value="<?= $active_uid ?>">
+                    <textarea class="inbox-reply-input" name="reply_msg" placeholder="Tulis balasan untuk <?= htmlspecialchars($selected_user['nama']) ?>..." required></textarea>
+                    <button type="submit" class="btn-admin primary">
                         <i class="bi bi-send"></i>
                     </button>
-                </div>
+                </form>
 
                 <?php else: ?>
                 <div class="inbox-empty-state">
@@ -274,6 +291,8 @@ searchInput.addEventListener('input', function() {
     clearTimeout(searchTimeout);
     searchTimeout = setTimeout(() => this.closest('form').submit(), 500);
 });
+const chatBody = document.getElementById('chat-body');
+if (chatBody) chatBody.scrollTop = chatBody.scrollHeight;
 </script>
 </body>
 </html>
