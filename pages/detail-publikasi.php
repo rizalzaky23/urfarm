@@ -91,16 +91,12 @@ $page = 'publikasi'; // For active navbar tab
     <!-- IMAGE -->
     <div class="detail-img-wrap">
         <?php
-        $artImg = $artikel['gambar']
-            ? '../assets/publikasi/' . htmlspecialchars($artikel['gambar'])
-            : '../assets/img2.jpeg';
-        
-        // In case the path doesn't exist, fallback to general assets
-        if (!file_exists($artImg) && $artikel['gambar']) {
-            $artImg = '../assets/' . htmlspecialchars($artikel['gambar']);
-        }
+        $artImg = !empty($artikel['gambar'])
+            ? $artikel['gambar']
+            : 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1200&q=80';
         ?>
-        <img src="<?= $artImg ?>" alt="<?= htmlspecialchars($artikel['judul']) ?>">
+        <img src="<?= htmlspecialchars($artImg) ?>" alt="<?= htmlspecialchars($artikel['judul']) ?>"
+             onerror="this.src='https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1200&q=80'">
     </div>
 
     <!-- CONTENT -->

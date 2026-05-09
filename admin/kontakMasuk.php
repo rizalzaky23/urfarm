@@ -17,7 +17,7 @@ if (isset($_GET['delete']) && is_numeric($_GET['delete'])) {
 }
 
 $search = trim($_GET['q'] ?? '');
-$active_id = isset($_GET['id']) && is_numeric($_GET['id']) ? intval($_GET['id']) : null;
+$active_uid = isset($_GET['uid']) && is_numeric($_GET['uid']) ? intval($_GET['uid']) : null;
 
 $where = '1=1';
 $bind_t = ''; $bind_v = [];
@@ -27,9 +27,14 @@ if ($search !== '') {
     $bind_t = 'ss'; $bind_v = [$like, $like];
 }
 
-$sql = "SELECT c.id_contact, c.pesan, u.nama, u.email
+$sql = "SELECT c.id_contact, c.pesan, u.id as user_id, u.nama, u.email
         FROM contact c
         JOIN users u ON u.id = c.id_users
+        JOIN (
+            SELECT id_users, MAX(id_contact) as max_id
+            FROM contact
+            GROUP BY id_users
+        ) latest ON c.id_contact = latest.max_id
         WHERE $where
         ORDER BY c.id_contact DESC";
 
@@ -42,25 +47,29 @@ if ($bind_t) {
     $result = $conn->query($sql);
 }
 
-$rows = [];
-while ($row = $result->fetch_assoc()) $rows[] = $row;
+$user_list = [];
+while ($row = $result->fetch_assoc()) $user_list[] = $row;
 
-$active_msg = null;
-if ($active_id) {
-    foreach ($rows as $r) {
-        if ((int)$r['id_contact'] === $active_id) { $active_msg = $r; break; }
-    }
-    if (!$active_msg) {
-        $st2 = $conn->prepare("SELECT c.id_contact, c.pesan, u.nama, u.email FROM contact c JOIN users u ON u.id = c.id_users WHERE c.id_contact = ?");
-        $st2->bind_param('i', $active_id);
-        $st2->execute();
-        $r2 = $st2->get_result()->fetch_assoc();
-        if ($r2) $active_msg = $r2;
-        $st2->close();
+$active_messages = [];
+$selected_user = null;
+if ($active_uid) {
+    $st_u = $conn->prepare("SELECT id, nama, email FROM users WHERE id = ?");
+    $st_u->bind_param('i', $active_uid);
+    $st_u->execute();
+    $selected_user = $st_u->get_result()->fetch_assoc();
+    $st_u->close();
+
+    if ($selected_user) {
+        $st_m = $conn->prepare("SELECT id_contact, pesan FROM contact WHERE id_users = ? ORDER BY id_contact ASC");
+        $st_m->bind_param('i', $active_uid);
+        $st_m->execute();
+        $res_m = $st_m->get_result();
+        while ($rm = $res_m->fetch_assoc()) $active_messages[] = $rm;
+        $st_m->close();
     }
 }
 
-$total_kontak = count($rows);
+$total_kontak = count($user_list);
 
 $avatar_colors = ['#D4A84B','#2B7FEB','#40916C','#E63946','#7B1FA2','#1B4332','#388E3C','#0288D1','#F57C00','#C2185B'];
 
@@ -145,23 +154,23 @@ function getColor($name, $colors) {
                     </form>
                 </div>
 
-                <?php if (empty($rows)): ?>
+                <?php if (empty($user_list)): ?>
                 <div style="padding: 40px 20px; text-align: center; color: var(--text-muted);">
                     <i class="bi bi-inbox" style="font-size: 36px; opacity: 0.3; display: block; margin-bottom: 10px;"></i>
                     <p style="font-size: 13px;">Tidak ada pesan ditemukan</p>
                 </div>
                 <?php else: ?>
-                <?php foreach ($rows as $msg):
-                    $init  = getInitials($msg['nama']);
-                    $color = getColor($msg['nama'], $avatar_colors);
-                    $preview = mb_substr($msg['pesan'], 0, 60) . (mb_strlen($msg['pesan']) > 60 ? '...' : '');
-                    $is_active = $active_id === (int)$msg['id_contact'];
+                <?php foreach ($user_list as $user):
+                    $init  = getInitials($user['nama']);
+                    $color = getColor($user['nama'], $avatar_colors);
+                    $preview = mb_substr($user['pesan'], 0, 60) . (mb_strlen($user['pesan']) > 60 ? '...' : '');
+                    $is_active = $active_uid === (int)$user['user_id'];
                 ?>
-                <a href="?<?= $search ? 'q='.urlencode($search).'&' : '' ?>id=<?= $msg['id_contact'] ?>"
+                <a href="?<?= $search ? 'q='.urlencode($search).'&' : '' ?>uid=<?= $user['user_id'] ?>"
                    class="inbox-item <?= $is_active ? 'active' : '' ?>">
                     <div class="inbox-avatar" style="background: <?= $color ?>"><?= $init ?></div>
                     <div class="inbox-item-info">
-                        <div class="inbox-sender"><?= htmlspecialchars($msg['nama']) ?></div>
+                        <div class="inbox-sender"><?= htmlspecialchars($user['nama']) ?></div>
                         <div class="inbox-preview"><?= htmlspecialchars($preview) ?></div>
                     </div>
                 </a>
@@ -170,9 +179,9 @@ function getColor($name, $colors) {
             </div>
 
             <div class="inbox-detail">
-                <?php if ($active_msg):
-                    $init  = getInitials($active_msg['nama']);
-                    $color = getColor($active_msg['nama'], $avatar_colors);
+                <?php if ($selected_user):
+                    $init  = getInitials($selected_user['nama']);
+                    $color = getColor($selected_user['nama'], $avatar_colors);
                 ?>
                 <div class="inbox-detail-header">
                     <div style="display: flex; align-items: flex-start; gap: 14px;">
@@ -180,22 +189,28 @@ function getColor($name, $colors) {
                             <?= $init ?>
                         </div>
                         <div style="flex: 1;">
-                            <div class="inbox-detail-subject"><?= htmlspecialchars($active_msg['nama']) ?></div>
-                            <div class="inbox-detail-meta"><?= htmlspecialchars($active_msg['email']) ?></div>
-                            <div class="inbox-detail-meta-row">
-                                <button class="btn-admin danger" onclick="confirmDelete(<?= $active_msg['id_contact'] ?>)">
-                                    <i class="bi bi-trash"></i> Hapus
-                                </button>
-                            </div>
+                            <div class="inbox-detail-subject"><?= htmlspecialchars($selected_user['nama']) ?></div>
+                            <div class="inbox-detail-meta"><?= htmlspecialchars($selected_user['email']) ?></div>
                         </div>
                     </div>
                 </div>
                 <div class="inbox-detail-body">
-                    <?= nl2br(htmlspecialchars($active_msg['pesan'])) ?>
+                    <?php foreach ($active_messages as $msg): ?>
+                        <div class="msg-thread-item" style="margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 15px;">
+                            <div style="font-size: 13px; color: var(--text); line-height: 1.6;">
+                                <?= nl2br(htmlspecialchars($msg['pesan'])) ?>
+                            </div>
+                            <div style="display: flex; justify-content: flex-end; margin-top: 8px;">
+                                <button class="btn-admin danger" style="padding: 2px 8px; font-size: 11px;" onclick="confirmDelete(<?= $msg['id_contact'] ?>)">
+                                    <i class="bi bi-trash"></i> Hapus
+                                </button>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
                 </div>
                 <div class="inbox-reply-bar">
-                    <textarea class="inbox-reply-input" placeholder="Balas via email manual ke: <?= htmlspecialchars($active_msg['email']) ?>"></textarea>
-                    <button class="btn-admin primary" onclick="showToast('Buka email client Anda untuk membalas ke <?= htmlspecialchars($active_msg['email']) ?>')">
+                    <textarea class="inbox-reply-input" placeholder="Balas via email manual ke: <?= htmlspecialchars($selected_user['email']) ?>"></textarea>
+                    <button class="btn-admin primary" onclick="showToast('Buka email client Anda untuk membalas ke <?= htmlspecialchars($selected_user['email']) ?>')">
                         <i class="bi bi-send"></i>
                     </button>
                 </div>
@@ -231,7 +246,7 @@ function getColor($name, $colors) {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 function confirmDelete(id) {
-    document.getElementById('confirm-delete-btn').href = '?delete=' + id + '<?= $search ? '&q='.urlencode($search) : '' ?>';
+    document.getElementById('confirm-delete-btn').href = '?delete=' + id + '<?= $search ? '&q='.urlencode($search) : '' ?><?= $active_uid ? '&uid='.$active_uid : '' ?>';
     document.getElementById('modal-confirm').classList.add('open');
 }
 function closeModal() {

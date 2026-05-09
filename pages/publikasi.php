@@ -83,11 +83,11 @@ $highlight = !empty($publikasi) ? array_shift($publikasi) : null;
             <div class="highlight-card">
                 <div class="highlight-img">
                     <?php
-                    $hlImg = $highlight['gambar']
-                        ? '../assets/publikasi/' . htmlspecialchars($highlight['gambar'])
-                        : 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80';
+                    $hlImg = !empty($highlight['gambar'])
+                        ? $highlight['gambar']
+                        : 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80';
                     ?>
-                    <img src="<?= $hlImg ?>" alt="<?= htmlspecialchars($highlight['judul']) ?>">
+                    <img src="<?= htmlspecialchars($hlImg) ?>" alt="<?= htmlspecialchars($highlight['judul']) ?>" onerror="this.src='https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800&q=80'">
                 </div>
                 <div class="highlight-body">
                     <span class="badge-gold">HIGHLIGHT UTAMA</span>
@@ -113,11 +113,11 @@ $highlight = !empty($publikasi) ? array_shift($publikasi) : null;
                 <div class="artikel-card">
                     <div class="artikel-img">
                         <?php
-                        $artImg = $artikel['gambar']
-                            ? '../assets/publikasi/' . htmlspecialchars($artikel['gambar'])
-                            : '../assets/img2.jpeg';
+                        $artImg = !empty($artikel['gambar'])
+                            ? $artikel['gambar']
+                            : 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&q=80';
                         ?>
-                        <img src="<?= $artImg ?>" alt="<?= htmlspecialchars($artikel['judul']) ?>">
+                        <img src="<?= htmlspecialchars($artImg) ?>" alt="<?= htmlspecialchars($artikel['judul']) ?>" onerror="this.src='https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&q=80'">
                     </div>
                     <div class="artikel-body">
                         <span class="artikel-date"><?= date('d M Y', strtotime($artikel['tanggal_publikasi'])) ?></span>

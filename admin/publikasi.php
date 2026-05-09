@@ -287,12 +287,16 @@ function style($jenis) {
 
 <!-- modal tambah/edit -->
 <div class="modal-overlay <?= $showModal?'open':'' ?>" id="modal-pub">
-  <div class="modal modal-lg">
+  <div class="pub-modal pub-modal-lg">
     <div class="modal-header">
-      <div class="modal-title"><?= $editRow ? 'Edit Publikasi' : 'Tulis Publikasi Baru' ?></div>
+      <div class="modal-title">
+        <span class="modal-title-icon"><i class="bi bi-<?= $editRow ? 'pencil-square' : 'plus-circle-fill' ?>"></i></span>
+        <?= $editRow ? 'Edit Publikasi' : 'Tulis Publikasi Baru' ?>
+      </div>
       <button class="modal-close" onclick="closeModal('modal-pub')"><i class="bi bi-x-lg"></i></button>
     </div>
-    <form method="POST" enctype="multipart/form-data">
+    <div class="modal-body">
+    <form method="POST" id="form-pub">
       <input type="hidden" name="action" value="<?= $editRow?'edit':'tambah' ?>">
       <?php if ($editRow): ?>
       <input type="hidden" name="id_publikasi" value="<?= $editRow['id_publikasi'] ?>">
@@ -342,37 +346,43 @@ function style($jenis) {
 
       <div class="form-group">
         <label class="form-label">Isi Artikel *</label>
-        <textarea class="form-control" name="isi" rows="6" required
+        <textarea class="form-control" name="isi" rows="5" required
                   placeholder="Tulis konten di sini..."><?= htmlspecialchars($editRow['isi']??'') ?></textarea>
       </div>
-
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline" onclick="closeModal('modal-pub')">Batal</button>
-        <button type="submit" class="btn btn-primary">
-          <i class="bi bi-send"></i> <?= $editRow?'Simpan Perubahan':'Simpan' ?>
-        </button>
-      </div>
-    </form>
-  </div>
-</div>
+    </div><!-- /.modal-body -->
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline" onclick="closeModal('modal-pub')"><i class="bi bi-x"></i> Batal</button>
+      <button type="submit" form="form-pub" class="btn btn-primary">
+        <i class="bi bi-<?= $editRow ? 'check2-circle' : 'send-fill' ?>"></i>
+        <?= $editRow ? 'Simpan Perubahan' : 'Publikasikan' ?>
+      </button>
+    </div>
+  </div><!-- /.pub-modal -->
+</div><!-- /.modal-overlay -->
 
 <!-- modal hapus -->
 <div class="modal-overlay" id="modal-hapus">
-  <div class="modal modal-sm">
-    <div class="modal-header">
-      <div class="modal-title" style="color:var(--red)">Konfirmasi Hapus</div>
+  <div class="pub-modal pub-modal-sm">
+    <div class="modal-header" style="background:linear-gradient(135deg,#991b1b,#dc2626)">
+      <div class="modal-title"><span class="modal-title-icon"><i class="bi bi-trash3-fill"></i></span>Hapus Publikasi</div>
       <button class="modal-close" onclick="closeModal('modal-hapus')"><i class="bi bi-x-lg"></i></button>
     </div>
-    <p style="font-size:14px;color:var(--text-muted)">Hapus publikasi <strong id="del-nama"></strong>?</p>
-    <p style="font-size:12px;color:var(--red)">Tindakan ini tidak dapat dibatalkan.</p>
-    <form method="POST">
-      <input type="hidden" name="action" value="hapus">
-      <input type="hidden" name="id_publikasi" id="del-id">
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline" onclick="closeModal('modal-hapus')">Batal</button>
-        <button type="submit" class="btn btn-danger"><i class="bi bi-trash-fill"></i> Ya, Hapus</button>
+    <div class="modal-body" style="text-align:center;padding:28px 24px 20px">
+      <div style="width:60px;height:60px;background:#fee2e2;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:26px;color:#dc2626;"><i class="bi bi-trash3-fill"></i></div>
+      <p style="font-size:15px;font-weight:700;color:var(--text);margin-bottom:6px">Hapus artikel ini?</p>
+      <p id="del-nama" style="font-size:13px;font-weight:600;color:var(--green-900);margin-bottom:14px"></p>
+      <div style="font-size:12px;color:#dc2626;background:#fef2f2;border-radius:8px;padding:8px 14px;display:flex;align-items:center;justify-content:center;gap:6px">
+        <i class="bi bi-exclamation-triangle-fill"></i> Tindakan ini tidak dapat dibatalkan
       </div>
-    </form>
+    </div>
+    <div class="modal-footer" style="justify-content:center;gap:12px">
+      <form method="POST" style="display:contents">
+        <input type="hidden" name="action" value="hapus">
+        <input type="hidden" name="id_publikasi" id="del-id">
+        <button type="button" class="btn btn-outline" onclick="closeModal('modal-hapus')" style="min-width:90px"><i class="bi bi-x"></i> Batal</button>
+        <button type="submit" class="btn btn-danger" style="min-width:110px"><i class="bi bi-trash3-fill"></i> Ya, Hapus</button>
+      </form>
+    </div>
   </div>
 </div>
 

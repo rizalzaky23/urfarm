@@ -4,6 +4,9 @@
 if (!isset($total_kontak)) {
     $total_kontak = $conn->query("SELECT COUNT(*) as c FROM contact")->fetch_assoc()['c'];
 }
+if (!isset($pending_donasi)) {
+    $pending_donasi = $conn->query("SELECT COUNT(*) as c FROM donasi WHERE status='pending'")->fetch_assoc()['c'];
+}
 $current = basename($_SERVER['PHP_SELF']);
 ?>
 <aside class="sidebar">
@@ -27,7 +30,13 @@ $current = basename($_SERVER['PHP_SELF']);
 
   <div class="sidebar-section">Keuangan &amp; Lokasi</div>
   <nav class="sidebar-nav">
-    <a href="../alokasi.php"><i class="bi bi-wallet2"></i> Alokasi Dana</a>
+    <a href="/project-urfarm/admin/donasi.php" <?= $current==='donasi.php'?'class="active"':'' ?>>
+      <i class="bi bi-cash-coin"></i> Donasi
+      <?php if($pending_donasi > 0): ?>
+      <span class="badge-count"><?= $pending_donasi ?></span>
+      <?php endif; ?>
+    </a>
+    <a href="/project-urfarm/admin/alokasiDana.php" <?= $current==='alokasiDana.php'?'class="active"':'' ?>><i class="bi bi-wallet2"></i> Alokasi Dana</a>
     <a href="../lokasi.php"><i class="bi bi-geo-alt-fill"></i> Lokasi &amp; Penanaman</a>
   </nav>
 
