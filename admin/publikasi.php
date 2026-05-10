@@ -1,7 +1,11 @@
 <?php
 session_start();
-
 require_once '../config/connection.php';
+
+if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
+    header('Location: ../auth/login.php');
+    exit;
+}
 // upload config
 define('UPLOAD_DIR', 'uploads/publikasi/');
 if (!is_dir(UPLOAD_DIR)) mkdir(UPLOAD_DIR, 0755, true);
@@ -133,38 +137,12 @@ function style($jenis) {
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/publikasi.css">
+<link rel="stylesheet" href="css/sidebar.css?v=<?= time() ?>">
+<link rel="stylesheet" href="css/publikasi.css?v=<?= time() ?>">
 </head>
 <body>
 
-<aside class="sidebar">
-  <div class="sidebar-logo">
-    <div class="logo-icon">Ur</div>
-    <div class="logo-text">Ur<span>Farm</span></div>
-  </div>
-  <nav class="sidebar-nav">
-    <div class="nav-section-label">Utama</div>
-    <a href="dashboard.php" class="nav-item"><i class="bi bi-grid-1x2-fill"></i> Dashboard</a>
-    <a href="iklan.php"     class="nav-item"><i class="bi bi-megaphone-fill"></i> Iklan</a>
-    <a href="event.php"     class="nav-item"><i class="bi bi-calendar-event-fill"></i> Event</a>
-    <div class="nav-section-label">Manajemen</div>
-    <a href="alokasi_dana.php"     class="nav-item"><i class="bi bi-wallet2"></i> Alokasi Dana</a>
-    <a href="lokasi_penanaman.php" class="nav-item"><i class="bi bi-geo-alt-fill"></i> Lokasi & Penanaman</a>
-    <div class="nav-section-label">Konten</div>
-    <a href="kode.php"      class="nav-item"><i class="bi bi-qr-code"></i> Kode</a>
-    <a href="publikasi.php" class="nav-item active"><i class="bi bi-newspaper"></i> Publikasi</a>
-    <a href="kontakMasuk.php"    class="nav-item"><i class="bi bi-chat-dots-fill"></i> Kontak Masuk</a>
-  </nav>
-  <div class="sidebar-footer">
-    <div class="admin-info">
-      <div class="admin-avatar">A</div>
-      <div>
-        <div class="admin-name"><?= htmlspecialchars($_SESSION['admin_nama'] ?? 'Admin UrFarm') ?></div>
-        <div class="admin-role">Super Admin</div>
-      </div>
-    </div>
-  </div>
-</aside>
+<?php include 'partials/sidebar.php'; ?>
 
 <div class="main">
   <div class="topbar">

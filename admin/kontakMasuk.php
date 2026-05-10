@@ -108,43 +108,12 @@ function getColor($name, $colors) {
     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/kontak-masuk.css">
+    <link rel="stylesheet" href="css/sidebar.css?v=<?= time() ?>">
+    <link rel="stylesheet" href="css/kontak-masuk.css?v=<?= time() ?>">
 </head>
 <body>
 
-<aside class="sidebar">
-    <div class="sidebar-logo">
-        <div class="logo-icon">UF</div>
-        <div class="logo-text">Ur<span>Farm</span></div>
-    </div>
-    <nav class="sidebar-nav">
-        <div class="nav-section-label">Utama</div>
-        <a href="dashboard.php" class="nav-item"><i class="bi bi-grid-1x2"></i> Dashboard</a>
-        <a href="bibit.php" class="nav-item"><i class="bi bi-tree"></i> Bibit</a>
-        <a href="event.php" class="nav-item"><i class="bi bi-calendar-event"></i> Event</a>
-        <div class="nav-section-label">Keuangan &amp; Lokasi</div>
-        <a href="dana.php" class="nav-item"><i class="bi bi-wallet2"></i> Alokasi Dana</a>
-        <a href="lokasi.php" class="nav-item"><i class="bi bi-geo-alt"></i> Lokasi &amp; Penanaman</a>
-        <div class="nav-section-label">Konten</div>
-        <a href="kode.php" class="nav-item"><i class="bi bi-qr-code"></i> Kode</a>
-        <a href="publikasi.php" class="nav-item"><i class="bi bi-newspaper"></i> Publikasi</a>
-        <a href="kontakMasuk.php" class="nav-item active">
-            <i class="bi bi-envelope"></i> Kontak Masuk
-            <?php if ($total_kontak > 0): ?>
-                <span class="nav-badge"><?= $total_kontak ?></span>
-            <?php endif; ?>
-        </a>
-    </nav>
-    <div class="sidebar-footer">
-        <div class="admin-info">
-            <div class="admin-avatar">AD</div>
-            <div>
-                <div class="admin-name"><?= htmlspecialchars($_SESSION['user_nama'] ?? 'Admin') ?></div>
-                <div class="admin-role">Super Admin</div>
-            </div>
-        </div>
-    </div>
-</aside>
+<?php include 'partials/sidebar.php'; ?>
 
 <div class="main">
     <header class="topbar">

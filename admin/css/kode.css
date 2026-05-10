@@ -12,7 +12,7 @@
   --muted:   #6b7d74;
   --border:  #e4ebe7;
   --bg:      #f4f7f5;
-  --sidebar: 220px;
+  --sidebar: 260px;
 }
 body {
   font-family: 'Inter', 'Segoe UI', sans-serif;
@@ -24,94 +24,7 @@ body {
 }
 a { text-decoration: none; color: inherit; }
 
-/* ── SIDEBAR ────────────────────────────────────────────────────── */
-.sidebar {
-  width: var(--sidebar);
-  background: var(--green);
-  display: flex;
-  flex-direction: column;
-  position: fixed;
-  top: 0; left: 0;
-  height: 100vh;
-  overflow-y: auto;
-  z-index: 100;
-}
-.s-logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 18px 20px;
-  border-bottom: 1px solid rgba(255,255,255,.1);
-}
-.s-icon {
-  width: 34px; height: 34px;
-  background: rgba(255,255,255,.15);
-  border-radius: 8px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 13px; font-weight: 700; color: #fff;
-}
-.s-brand {
-  font-size: 18px; font-weight: 700; color: #fff; letter-spacing: -.3px;
-}
-.s-brand span { color: #6ee79a; }
-.s-nav {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding: 10px;
-  flex: 1;
-}
-.s-sec {
-  padding: 16px 10px 6px;
-  font-size: 10px;
-  font-weight: 600;
-  color: rgba(255,255,255,.4);
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
-.nav-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 9px 12px;
-  border-radius: 8px;
-  color: rgba(255,255,255,.7);
-  font-size: 13.5px;
-  font-weight: 500;
-  transition: .2s;
-  cursor: pointer;
-}
-.nav-item:hover { background: rgba(255,255,255,.1); color: #fff; }
-.nav-item.active { background: rgba(255,255,255,.15); color: #fff; }
-.nav-item i { font-size: 16px; width: 20px; text-align: center; }
-.nav-badge {
-  margin-left: auto;
-  background: #ef4444;
-  color: #fff;
-  font-size: 10px;
-  font-weight: 700;
-  border-radius: 20px;
-  padding: 1px 7px;
-}
-.s-foot {
-  padding: 14px;
-  border-top: 1px solid rgba(255,255,255,.1);
-}
-.admin-box {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.avatar {
-  width: 36px; height: 36px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #52c97a, #1b9e57);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 13px; font-weight: 700; color: #fff;
-  flex-shrink: 0;
-}
-
-/* ── MAIN LAYOUT ────────────────────────────────────────────────── */
+/* sidebar removed *//* ── MAIN LAYOUT ────────────────────────────────────────────────── */
 .main {
   margin-left: var(--sidebar);
   flex: 1;

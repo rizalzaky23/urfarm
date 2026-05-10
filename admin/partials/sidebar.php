@@ -1,6 +1,5 @@
 <?php
 // Sidebar partial — include dari semua halaman admin
-// Variabel yang dibutuhkan: $total_kontak (optional)
 if (!isset($total_kontak)) {
     $total_kontak = $conn->query("SELECT COUNT(*) as c FROM contact")->fetch_assoc()['c'];
 }
@@ -36,15 +35,23 @@ $current = basename($_SERVER['PHP_SELF']);
       <span class="badge-count"><?= $pending_donasi ?></span>
       <?php endif; ?>
     </a>
-    <a href="/project-urfarm/admin/alokasiDana.php" <?= $current==='alokasiDana.php'?'class="active"':'' ?>><i class="bi bi-wallet2"></i> Alokasi Dana</a>
-    <a href="../lokasi.php"><i class="bi bi-geo-alt-fill"></i> Lokasi &amp; Penanaman</a>
+    <a href="/project-urfarm/admin/alokasiDana.php" <?= $current==='alokasiDana.php'?'class="active"':'' ?>>
+      <i class="bi bi-wallet2"></i> Alokasi Dana
+    </a>
+    <a href="/project-urfarm/admin/titikLokasi.php" <?= $current==='titikLokasi.php'?'class="active"':'' ?>>
+      <i class="bi bi-geo-alt-fill"></i> Titik Lokasi
+    </a>
   </nav>
 
   <div class="sidebar-section">Konten</div>
   <nav class="sidebar-nav">
-    <a href="kode.php" <?= $current==='kode.php'?'class="active"':'' ?>><i class="bi bi-key"></i> Kode</a>
-    <a href="publikasi.php" <?= $current==='publikasi.php'?'class="active"':'' ?>><i class="bi bi-newspaper"></i> Publikasi</a>
-    <a href="kontakMasuk.php" <?= $current==='kontakMasuk.php'?'class="active"':'' ?>>
+    <a href="/project-urfarm/admin/kode.php" <?= $current==='kode.php'?'class="active"':'' ?>>
+      <i class="bi bi-key"></i> Kode
+    </a>
+    <a href="/project-urfarm/admin/publikasi.php" <?= $current==='publikasi.php'?'class="active"':'' ?>>
+      <i class="bi bi-newspaper"></i> Publikasi
+    </a>
+    <a href="/project-urfarm/admin/kontakMasuk.php" <?= $current==='kontakMasuk.php'?'class="active"':'' ?>>
       <i class="bi bi-envelope-fill"></i> Kontak Masuk
       <?php if($total_kontak > 0): ?>
       <span class="badge-count"><?= $total_kontak ?></span>

@@ -116,38 +116,12 @@ $rows=$ds->get_result()->fetch_all(MYSQLI_ASSOC); $ds->close();
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>UrFarm — Kode</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-<link rel="stylesheet" href="css/kode.css">
+<link rel="stylesheet" href="css/sidebar.css?v=<?= time() ?>">
+<link rel="stylesheet" href="css/kode.css?v=<?= time() ?>">
 </head>
 <body>
 
-<aside class="sidebar">
-  <div class="s-logo">
-    <div class="s-icon">UF</div>
-    <div class="s-brand">Ur<span>Farm</span></div>
-  </div>
-  <nav class="s-nav">
-    <div class="s-sec">Utama</div>
-    <a class="nav-item" href="dashboard.php"><i class="bi bi-grid-1x2"></i>Dashboard</a>
-    <a class="nav-item" href="bibit.php"><i class="bi bi-tree"></i>Bibit</a>
-    <a class="nav-item" href="event.php"><i class="bi bi-calendar-event"></i>Event</a>
-    <div class="s-sec">Keuangan &amp; Lokasi</div>
-    <a class="nav-item" href="dana.php"><i class="bi bi-wallet2"></i>Alokasi Dana</a>
-    <a class="nav-item" href="lokasi.php"><i class="bi bi-geo-alt"></i>Lokasi &amp; Penanaman</a>
-    <div class="s-sec">Konten</div>
-    <a class="nav-item active" href="kode.php"><i class="bi bi-qr-code"></i>Kode</a>
-    <a class="nav-item" href="publikasi.php"><i class="bi bi-newspaper"></i>Publikasi</a>
-    <a class="nav-item" href="kontakMasuk.php"><i class="bi bi-envelope"></i>Kontak Masuk<span class="nav-badge">5</span></a>
-  </nav>
-  <div class="s-foot">
-    <div class="admin-box">
-      <div class="avatar" style="width:34px;height:34px;font-size:13px;">AD</div>
-      <div>
-        <div style="font-size:13px;font-weight:600;">Admin UrFarm</div>
-        <div style="font-size:11px;color:var(--muted);">Super Admin</div>
-      </div>
-    </div>
-  </div>
-</aside>
+<?php include 'partials/sidebar.php'; ?>
 
 <div class="main">
   <header class="topbar">
