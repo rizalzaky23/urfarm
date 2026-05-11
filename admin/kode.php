@@ -1,6 +1,10 @@
 <?php
 session_start();
 
+if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
+    header('Location: ../auth/login.php'); exit;
+}
+
 require_once '../config/connection.php';
 
 function h($v){ return htmlspecialchars((string)($v??''), ENT_QUOTES, 'UTF-8'); }
