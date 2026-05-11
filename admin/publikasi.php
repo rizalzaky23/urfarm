@@ -102,7 +102,8 @@ $sc->close();
 $totalPg = max(1, (int)ceil($total / $perPg));
 
 $sd = $conn->prepare("SELECT p.*,e.nama_evet,e.jenis_event FROM publikasi p LEFT JOIN event e ON p.id_event=e.id_event $wsql ORDER BY p.tanggal_publikasi DESC LIMIT ? OFFSET ?");
-$sd->bind_param($types.'ii', ...array_merge($params, [$perPg, $offset]));
+$allParams = array_merge($params, [$perPg, $offset]);
+$sd->bind_param($types . 'ii', ...$allParams);
 $sd->execute();
 $rows = $sd->get_result()->fetch_all(MYSQLI_ASSOC);
 $sd->close();

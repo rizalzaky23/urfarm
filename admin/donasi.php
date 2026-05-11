@@ -88,7 +88,8 @@ $sd = $conn->prepare("
     ORDER BY d.created_at DESC
     LIMIT ? OFFSET ?
 ");
-$sd->bind_param($types.'ii', ...array_merge($params, [$perPg, $offset]));
+$allParams = array_merge($params, [$perPg, $offset]);
+$sd->bind_param($types . 'ii', ...$allParams);
 $sd->execute();
 $rows = $sd->get_result()->fetch_all(MYSQLI_ASSOC);
 $sd->close();
