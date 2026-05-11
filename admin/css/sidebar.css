@@ -112,3 +112,24 @@
   font-size: 11px;
   color: rgba(255,255,255,.5);
 }
+.sidebar-logout {
+  margin-left: auto;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+  transition: .2s;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.sidebar-logout:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border-color: rgba(239, 68, 68, 0.2);
+}
+.sidebar-logout i {
+  font-size: 16px;
+}

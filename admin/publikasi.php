@@ -156,6 +156,7 @@ function style($jenis) {
       <button class="btn btn-primary btn-sm" onclick="openModal('modal-pub')">
         <i class="bi bi-plus-lg"></i> Tulis Publikasi
       </button>
+      <a href="../auth/logout.php" class="logout-btn"><i class="bi bi-box-arrow-right"></i> Keluar</a>
     </div>
   </div>
 

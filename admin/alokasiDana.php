@@ -144,7 +144,7 @@ $flash = getFlash();
       <p>Transparansi dan manajemen keuangan</p>
     </div>
     <div class="topbar-right">
-      <a href="/project-urfarm/auth/logout.php" class="logout-btn"><i class="bi bi-box-arrow-right"></i> Keluar</a>
+      <a href="../auth/logout.php" class="logout-btn"><i class="bi bi-box-arrow-right"></i> Keluar</a>
     </div>
   </header>
 

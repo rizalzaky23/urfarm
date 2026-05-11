@@ -132,7 +132,7 @@ $rows=$ds->get_result()->fetch_all(MYSQLI_ASSOC); $ds->close();
     <div class="topbar-right">
       <a class="icon-btn" href="notifikasi.php"><i class="bi bi-bell"></i></a>
       <a class="icon-btn" href="pengaturan.php"><i class="bi bi-gear"></i></a>
-      <a class="btn btn-o sm" href="logout.php"><i class="bi bi-box-arrow-right"></i>Keluar</a>
+      <a class="btn btn-o sm" href="../auth/logout.php"><i class="bi bi-box-arrow-right"></i>Keluar</a>
     </div>
   </header>
 

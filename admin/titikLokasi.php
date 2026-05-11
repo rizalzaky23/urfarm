@@ -177,7 +177,7 @@ $flash = getFlash();
       <button class="btn btn-primary" onclick="openModal('modal-tambah')">
         <i class="bi bi-plus-lg"></i> Tambah Titik
       </button>
-      <a href="/project-urfarm/auth/logout.php" class="logout-btn"><i class="bi bi-box-arrow-right"></i> Keluar</a>
+      <a href="../auth/logout.php" class="logout-btn"><i class="bi bi-box-arrow-right"></i> Keluar</a>
     </div>
   </header>
 

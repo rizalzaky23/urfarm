@@ -66,6 +66,9 @@ $current = basename($_SERVER['PHP_SELF']);
         <div class="name"><?= htmlspecialchars($_SESSION['user_nama'] ?? 'Admin') ?></div>
         <div class="role">Admin UrFarm</div>
       </div>
+      <a href="../auth/logout.php" class="sidebar-logout" title="Keluar">
+        <i class="bi bi-box-arrow-right"></i>
+      </a>
     </div>
   </div>
 </aside>
