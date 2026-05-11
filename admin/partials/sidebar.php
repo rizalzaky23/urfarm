@@ -1,7 +1,7 @@
 <?php
 // Sidebar partial — include dari semua halaman admin
 if (!isset($total_kontak)) {
-    $total_kontak = $conn->query("SELECT COUNT(*) as c FROM contact")->fetch_assoc()['c'];
+    $total_kontak = $conn->query("SELECT COUNT(*) as c FROM contact WHERE pengirim='user' AND is_read=0")->fetch_assoc()['c'];
 }
 if (!isset($pending_donasi)) {
     $pending_donasi = $conn->query("SELECT COUNT(*) as c FROM donasi WHERE status='pending'")->fetch_assoc()['c'];

@@ -329,7 +329,10 @@ if (!isset($_SESSION['user_id'])) {
         }, { threshold: 0.4 });
         statsObserver.observe(document.getElementById('stats'));
 
-        function lacakBenih() {
+        var urfarmMap = null;
+        var highlightMarker = null;
+
+        async function lacakBenih() {
             const code = document.getElementById('seed-code').value.trim().toUpperCase();
             const result = document.getElementById('track-result');
 
@@ -344,27 +347,93 @@ if (!isset($_SESSION['user_id'])) {
             result.className = 'track-result loading';
             result.innerHTML = '<span class="spinner"></span> Memuat data benih...';
 
-            setTimeout(() => {
+            try {
+                const res = await fetch('api/lacak_kode.php?kode=' + encodeURIComponent(code));
+                const json = await res.json();
+
+                if (!json.success) {
+                    result.className = 'track-result error';
+                    result.innerHTML = '❌ ' + (json.message || 'Kode benih tidak ditemukan.');
+                    return;
+                }
+
+                const d = json.data;
+                const isTumbuh = d.status === 'tumbuh';
+                const statusBadge = isTumbuh
+                    ? '<span class="status-badge"><i class="bi bi-tree-fill"></i> Tumbuh Aktif</span>'
+                    : '<span class="status-badge benih"><i class="bi bi-tree"></i> Benih Baru</span>';
+                const tanggal = d.tanggal
+                    ? new Date(d.tanggal).toLocaleDateString('id-ID', { day:'numeric', month:'long', year:'numeric' })
+                    : '—';
+
                 result.className = 'track-result success';
                 result.innerHTML = `
-            <div class="result-row">
-                <span class="result-label">Kode Benih</span>
-                <strong>${code}</strong>
-            </div>
-            <div class="result-row">
-                <span class="result-label">Lokasi</span>
-                <span>Kalimantan Tengah, Kab. Barito Selatan</span>
-            </div>
-            <div class="result-row">
-                <span class="result-label">Status</span>
-                <span class="status-badge"><i class="bi bi-tree-fill"></i> Tumbuh Aktif</span>
-            </div>
-            <div class="result-row">
-                <span class="result-label">Tanggal Tanam</span>
-                <span>15 Februari 2026</span>
-            </div>
-        `;
-            }, 1500);
+                    <div class="result-row">
+                        <span class="result-label">Kode Benih</span>
+                        <strong>${d.kode_unik}</strong>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">Lokasi</span>
+                        <span>${d.lokasi || d.nama_event || '—'}</span>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">Status</span>
+                        ${statusBadge}
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">Tanggal Tanam</span>
+                        <span>${tanggal}</span>
+                    </div>
+                `;
+
+                // Zoom map to the location
+                const lat = parseFloat(d.latitude);
+                const lng = parseFloat(d.longitude);
+                if (!isNaN(lat) && !isNaN(lng) && urfarmMap) {
+                    // Scroll to map section smoothly
+                    document.getElementById('map-section').scrollIntoView({ behavior: 'smooth' });
+
+                    setTimeout(() => {
+                        urfarmMap.invalidateSize();
+
+                        // Remove old highlight marker if any
+                        if (highlightMarker) {
+                            urfarmMap.removeLayer(highlightMarker);
+                        }
+
+                        // Fly to the location
+                        urfarmMap.flyTo([lat, lng], 14, { duration: 1.5 });
+
+                        // Add a pulsing highlight marker
+                        const pulseIcon = L.divIcon({
+                            html: `<div class="pulse-marker">
+                                <div class="pulse-ring"></div>
+                                <div class="pulse-dot"></div>
+                            </div>`,
+                            className: '',
+                            iconSize: [40, 40],
+                            iconAnchor: [20, 20],
+                        });
+
+                        highlightMarker = L.marker([lat, lng], { icon: pulseIcon }).addTo(urfarmMap);
+
+                        // Open the popup of the existing marker nearby
+                        urfarmMap.eachLayer(layer => {
+                            if (layer instanceof L.Marker && layer !== highlightMarker) {
+                                const pos = layer.getLatLng();
+                                if (Math.abs(pos.lat - lat) < 0.001 && Math.abs(pos.lng - lng) < 0.001) {
+                                    layer.openPopup();
+                                }
+                            }
+                        });
+                    }, 600);
+                }
+
+            } catch (err) {
+                result.className = 'track-result error';
+                result.innerHTML = '❌ Terjadi kesalahan saat memuat data.';
+                console.error(err);
+            }
         }
 
         document.getElementById('btn-lacak').addEventListener('click', lacakBenih);
@@ -389,7 +458,7 @@ if (!isset($_SESSION['user_id'])) {
     <script>
     window.addEventListener('load', async function() {
         //inisialisasi peta Leaflet
-        const map = L.map('gmap', {
+        urfarmMap = L.map('gmap', {
             center: [-2.5, 118.0],
             zoom: 6,
             zoomControl: true,
@@ -400,9 +469,9 @@ if (!isset($_SESSION['user_id'])) {
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors',
             maxZoom: 19,
-        }).addTo(map);
+        }).addTo(urfarmMap);
 
-        setTimeout(() => map.invalidateSize(), 100);
+        setTimeout(() => urfarmMap.invalidateSize(), 100);
 
         //costum SVG
         function createIcon(isTumbuh) {
@@ -483,7 +552,7 @@ if (!isset($_SESSION['user_id'])) {
                     className: 'urfarm-popup',
                 });
 
-                marker.addTo(map);
+                marker.addTo(urfarmMap);
             });
         } catch (err) {
             console.error('Gagal memuat titik lokasi:', err);

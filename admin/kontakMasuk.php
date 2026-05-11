@@ -42,7 +42,8 @@ if ($search !== '') {
     $bind_t = 'ss'; $bind_v = [$like, $like];
 }
 
-$sql = "SELECT c.id_contact, c.pesan, u.id as user_id, u.nama, u.email
+$sql = "SELECT c.id_contact, c.pesan, u.id as user_id, u.nama, u.email,
+        (SELECT COUNT(*) FROM contact c2 WHERE c2.id_users = u.id AND c2.pengirim = 'user' AND c2.is_read = 0) as unread_count
         FROM contact c
         JOIN users u ON u.id = c.id_users
         JOIN (
@@ -68,6 +69,12 @@ while ($row = $result->fetch_assoc()) $user_list[] = $row;
 $active_messages = [];
 $selected_user = null;
 if ($active_uid) {
+    // Mark as read
+    $st_upd = $conn->prepare("UPDATE contact SET is_read = 1 WHERE id_users = ? AND pengirim = 'user'");
+    $st_upd->bind_param('i', $active_uid);
+    $st_upd->execute();
+    $st_upd->close();
+
     $st_u = $conn->prepare("SELECT id, nama, email FROM users WHERE id = ?");
     $st_u->bind_param('i', $active_uid);
     $st_u->execute();
@@ -149,13 +156,19 @@ function getColor($name, $colors) {
                     $color = getColor($user['nama'], $avatar_colors);
                     $preview = mb_substr($user['pesan'], 0, 60) . (mb_strlen($user['pesan']) > 60 ? '...' : '');
                     $is_active = $active_uid === (int)$user['user_id'];
+                    $unread = $user['unread_count'];
                 ?>
                 <a href="?<?= $search ? 'q='.urlencode($search).'&' : '' ?>uid=<?= $user['user_id'] ?>"
                    class="inbox-item <?= $is_active ? 'active' : '' ?>">
                     <div class="inbox-avatar" style="background: <?= $color ?>"><?= $init ?></div>
                     <div class="inbox-item-info">
-                        <div class="inbox-sender"><?= htmlspecialchars($user['nama']) ?></div>
-                        <div class="inbox-preview"><?= htmlspecialchars($preview) ?></div>
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <div class="inbox-sender"><?= htmlspecialchars($user['nama']) ?></div>
+                            <?php if ($unread > 0): ?>
+                            <div class="badge-unread"><?= $unread ?></div>
+                            <?php endif; ?>
+                        </div>
+                        <div class="inbox-preview" <?= $unread > 0 ? 'style="font-weight:700; color:var(--text);"' : '' ?>><?= htmlspecialchars($preview) ?></div>
                     </div>
                 </a>
                 <?php endforeach; ?>
