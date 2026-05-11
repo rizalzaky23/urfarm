@@ -62,11 +62,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // ── DATA PENDUKUNG ─────────────────────────────────────────────────────────
-$donasi_list = $conn->query("SELECT id_donasi, nama_donatur, jumlah_transfer FROM donasi WHERE status='verified' ORDER BY id_donasi DESC")->fetch_all(MYSQLI_ASSOC);
+$donasi_list = $conn->query("SELECT id_donasi, nama_donatur, nominal FROM donasi WHERE status='verified' ORDER BY id_donasi DESC")->fetch_all(MYSQLI_ASSOC);
 $penanaman_list = $conn->query("SELECT p.id_penanaman, e.nama_evet, p.lokasi FROM penanaman p LEFT JOIN event e ON p.id_event=e.id_event ORDER BY p.id_penanaman")->fetch_all(MYSQLI_ASSOC);
 
 // ── STATS ──────────────────────────────────────────────────────────────────
-$total_donasi_masuk = (float)$conn->query("SELECT COALESCE(SUM(jumlah_transfer), 0) as t FROM donasi WHERE status='verified'")->fetch_assoc()['t'];
+$total_donasi_masuk = (float)$conn->query("SELECT COALESCE(SUM(nominal), 0) as t FROM donasi WHERE status='verified'")->fetch_assoc()['t'];
 $total_biaya_digunakan = (float)$conn->query("SELECT COALESCE(SUM(nominal), 0) as t FROM alokasi_dana")->fetch_assoc()['t'];
 $sisa_dana = $total_donasi_masuk - $total_biaya_digunakan;
 $pct_used = $total_donasi_masuk > 0 ? round(($total_biaya_digunakan / $total_donasi_masuk) * 100) : 0;
@@ -94,7 +94,7 @@ $sc->close();
 $totalPg = max(1, (int)ceil($total / $perPg));
 
 $sd = $conn->prepare("
-    SELECT a.*, d.nama_donatur, d.jumlah_transfer, e.nama_evet, p.lokasi as penanaman_lokasi
+    SELECT a.*, d.nama_donatur, d.nominal as nominal_donasi, e.nama_evet, p.lokasi as penanaman_lokasi
     FROM alokasi_dana a
     LEFT JOIN donasi d ON a.id_donasi = d.id_donasi
     LEFT JOIN penanaman p ON a.id_penanaman = p.id_penanaman
@@ -307,7 +307,7 @@ $flash = getFlash();
             <option value="">— Pilih Donasi (opsional) —</option>
             <?php foreach ($donasi_list as $dn): ?>
             <option value="<?= $dn['id_donasi'] ?>" <?= ($editRow['id_donasi'] ?? '') == $dn['id_donasi'] ? 'selected' : '' ?>>
-              #<?= $dn['id_donasi'] ?> — <?= htmlspecialchars($dn['nama_donatur']) ?> (<?= rupiah($dn['jumlah_transfer']) ?>)
+              #<?= $dn['id_donasi'] ?> — <?= htmlspecialchars($dn['nama_donatur']) ?> (<?= rupiah($dn['nominal']) ?>)
             </option>
             <?php endforeach; ?>
           </select>

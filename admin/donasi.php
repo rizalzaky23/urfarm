@@ -34,6 +34,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         flash('Donasi #'.$id.' berhasil dihapus.', 'danger');
         header('Location: donasi.php'); exit;
     }
+
+    if ($act === 'update_lokasi' && !empty($_POST['id_donasi'])) {
+        $id = intval($_POST['id_donasi']);
+        $kode = trim($_POST['kode_lokasi'] ?? '');
+        $kode = $kode ?: null;
+        $s = $conn->prepare("UPDATE donasi SET kode_lokasi=? WHERE id_donasi=?");
+        $s->bind_param('si', $kode, $id);
+        $s->execute(); $s->close();
+        flash("Kode lokasi untuk donasi #$id berhasil diperbarui!");
+        header('Location: donasi.php' . (isset($_GET['status']) ? '?status='.$_GET['status'] : '')); exit;
+    }
 }
 
 // ── STATS ──────────────────────────────────────────────────────────────
@@ -41,7 +52,7 @@ $st_total     = (int)$conn->query("SELECT COUNT(*) c FROM donasi")->fetch_assoc(
 $st_verified  = (int)$conn->query("SELECT COUNT(*) c FROM donasi WHERE status='verified'")->fetch_assoc()['c'];
 $st_pending   = (int)$conn->query("SELECT COUNT(*) c FROM donasi WHERE status='pending'")->fetch_assoc()['c'];
 $st_rejected  = (int)$conn->query("SELECT COUNT(*) c FROM donasi WHERE status='rejected'")->fetch_assoc()['c'];
-$st_nominal   = (float)$conn->query("SELECT COALESCE(SUM(jumlah_transfer),0) t FROM donasi WHERE status='verified'")->fetch_assoc()['t'];
+$st_nominal   = (float)$conn->query("SELECT COALESCE(SUM(nominal),0) t FROM donasi WHERE status='verified'")->fetch_assoc()['t'];
 
 // ── FILTERS & PAGINATION ──────────────────────────────────────────────
 $q       = trim($_GET['q'] ?? '');
@@ -219,12 +230,15 @@ $flash = getFlash();
                 <div class="td-main"><?= htmlspecialchars($row['nama_donatur']) ?></div>
                 <div class="td-sub"><?= htmlspecialchars($row['email']) ?></div>
               </td>
-              <td><span class="nominal-green"><?= rupiah($row['jumlah_transfer']) ?></span></td>
+              <td><span class="nominal-green"><?= rupiah($row['nominal']) ?></span></td>
               <td><span class="metode-badge"><?= strtoupper($row['metode']) ?></span></td>
               <td><span class="status-badge <?= $row['status'] ?>"><?= ucfirst($row['status']) ?></span></td>
               <td>
                 <?php if ($has_alokasi): ?>
                   <span class="status-badge allocated"><i class="bi bi-check2"></i> Dialokasikan</span>
+                  <?php if ($row['kode_lokasi']): ?>
+                    <div style="font-size:11px;color:var(--text-muted);margin-top:4px;"><i class="bi bi-qr-code"></i> <?= htmlspecialchars($row['kode_lokasi']) ?></div>
+                  <?php endif; ?>
                 <?php else: ?>
                   <span class="status-badge not-allocated">Belum</span>
                 <?php endif; ?>
@@ -233,6 +247,9 @@ $flash = getFlash();
               <td>
                 <div class="row-actions">
                   <a href="?detail=<?= $row['id_donasi'] ?><?= $fStatus?'&status='.$fStatus:'' ?>" class="btn-icon detail" title="Detail"><i class="bi bi-eye"></i></a>
+                  <?php if ($has_alokasi): ?>
+                    <button class="btn-icon detail" style="color:#2563eb;background:#eff6ff;" title="Atur Kode Unik" onclick="editLokasi(<?= $row['id_donasi'] ?>, '<?= htmlspecialchars($row['kode_lokasi'] ?? '') ?>')"><i class="bi bi-qr-code"></i></button>
+                  <?php endif; ?>
                   <?php if ($row['status'] === 'pending'): ?>
                     <button class="btn-icon verify" title="Verifikasi" onclick="quickAction(<?= $row['id_donasi'] ?>,'verified')"><i class="bi bi-check-lg"></i></button>
                     <button class="btn-icon reject" title="Tolak" onclick="quickAction(<?= $row['id_donasi'] ?>,'rejected')"><i class="bi bi-x-lg"></i></button>
@@ -338,6 +355,9 @@ $flash = getFlash();
             <?php if ($detailRow['alokasi_total'] > 0): ?>
               <span class="status-badge allocated"><i class="bi bi-check2"></i> Dialokasikan — <?= rupiah($detailRow['alokasi_total']) ?></span>
               <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">ID: <?= htmlspecialchars($detailRow['alokasi_ids']) ?></div>
+              <?php if ($detailRow['kode_lokasi']): ?>
+                <div style="font-size:12px;color:var(--text);margin-top:4px;font-weight:600;"><i class="bi bi-qr-code"></i> Kode Unik: <?= htmlspecialchars($detailRow['kode_lokasi']) ?></div>
+              <?php endif; ?>
             <?php else: ?>
               <span class="status-badge not-allocated">Belum dialokasikan</span>
             <?php endif; ?>
@@ -384,6 +404,31 @@ $flash = getFlash();
   </div>
 </div>
 
+<!-- LOKASI MODAL -->
+<div class="modal-backdrop" id="modal-lokasi">
+  <div class="modal" style="max-width:400px;">
+    <div class="modal-header">
+      <h3><i class="bi bi-qr-code"></i> Atur Kode Unik</h3>
+      <button class="modal-close" onclick="closeModal('modal-lokasi')"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <form method="POST">
+      <input type="hidden" name="action" value="update_lokasi">
+      <input type="hidden" name="id_donasi" id="lokasi-id">
+      <div class="modal-body">
+        <p style="font-size:14px;color:var(--text-muted);margin-bottom:12px;">Masukkan kode unik (dari menu Kode) untuk donasi <strong id="lokasi-nama-donasi"></strong>.</p>
+        <div class="form-group" style="margin-bottom:0;">
+          <label class="form-label">Kode Unik</label>
+          <input type="text" class="form-control" name="kode_lokasi" id="lokasi-kode" placeholder="Contoh: UFM-A1B2C3D4">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm" style="background:var(--border);color:var(--text);" onclick="closeModal('modal-lokasi')"><i class="bi bi-x"></i> Batal</button>
+        <button type="submit" class="btn btn-primary btn-sm"><i class="bi bi-save"></i> Simpan</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <!-- HIDDEN FORM FOR QUICK STATUS -->
 <form method="POST" id="quick-form" style="display:none;">
   <input type="hidden" name="action" value="update_status">
@@ -413,6 +458,13 @@ function confirmDelete(id, nama) {
   document.getElementById('del-id').value = id;
   document.getElementById('del-nama').textContent = '#' + id + ' — ' + nama;
   openModal('modal-hapus');
+}
+
+function editLokasi(id, currentKode) {
+  document.getElementById('lokasi-id').value = id;
+  document.getElementById('lokasi-nama-donasi').textContent = '#' + id;
+  document.getElementById('lokasi-kode').value = currentKode;
+  openModal('modal-lokasi');
 }
 
 let dt;

@@ -22,6 +22,7 @@ $stmt = $conn->prepare("
         d.pesan,
         d.catatan,
         d.created_at,
+        d.kode_lokasi,
         a.id_alokasi,
         a.id_penanaman,
         a.nominal AS nominal_dialokasikan
@@ -335,7 +336,22 @@ function statusBadge(string $status): string {
                 <div class="meta-item">
                     <span class="meta-label">Dialokasikan</span>
                     <span class="meta-value">
-                        <span class="alokasi-tag"><i class="bi bi-geo-alt-fill"></i> <?= htmlspecialchars($r['id_penanaman'] ?? '—') ?></span>
+                        <span class="alokasi-tag"><i class="bi bi-check2"></i> Ya</span>
+                    </span>
+                </div>
+                <?php endif; ?>
+                <?php if (!empty($r['kode_lokasi'])): ?>
+                <div class="meta-item">
+                    <span class="meta-label">Kode Unik</span>
+                    <span class="meta-value">
+                        <span class="alokasi-tag" style="background:#eff6ff;color:#1d4ed8;"><i class="bi bi-qr-code"></i> <?= htmlspecialchars($r['kode_lokasi']) ?></span>
+                    </span>
+                </div>
+                <?php elseif (!empty($r['id_penanaman'])): ?>
+                <div class="meta-item">
+                    <span class="meta-label">Penanaman</span>
+                    <span class="meta-value">
+                        <span class="alokasi-tag" style="background:#eff6ff;color:#1d4ed8;"><i class="bi bi-geo-alt-fill"></i> <?= htmlspecialchars($r['id_penanaman']) ?></span>
                     </span>
                 </div>
                 <?php endif; ?>

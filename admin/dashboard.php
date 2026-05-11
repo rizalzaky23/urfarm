@@ -9,7 +9,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
 }
 
 // ── STATS ──────────────────────────────────────────────────────────────────
-$total_donasi = $conn->query("SELECT COALESCE(SUM(jumlah_transfer),0) as total FROM donasi WHERE status='verified'")->fetch_assoc()['total'];
+$total_donasi = $conn->query("SELECT COALESCE(SUM(nominal),0) as total FROM donasi WHERE status='verified'")->fetch_assoc()['total'];
 $total_donatur = $conn->query("SELECT COUNT(*) as c FROM users WHERE role='donatur'")->fetch_assoc()['c'];
 $total_bibit = $conn->query("SELECT COALESCE(SUM(jumlah_bibit),0) as c FROM penanaman")->fetch_assoc()['c'];
 $total_event = $conn->query("SELECT COUNT(*) as c FROM event")->fetch_assoc()['c'];
@@ -19,7 +19,7 @@ $total_kontak = $conn->query("SELECT COUNT(*) as c FROM contact")->fetch_assoc()
 $total_kode = $conn->query("SELECT COUNT(*) as c FROM kode_titik")->fetch_assoc()['c'];
 
 // Donasi bulan ini
-$donasi_bulan = $conn->query("SELECT COALESCE(SUM(jumlah_transfer),0) as total FROM donasi WHERE MONTH(created_at)=MONTH(NOW()) AND YEAR(created_at)=YEAR(NOW())")->fetch_assoc()['total'];
+$donasi_bulan = $conn->query("SELECT COALESCE(SUM(nominal),0) as total FROM donasi WHERE MONTH(created_at)=MONTH(NOW()) AND YEAR(created_at)=YEAR(NOW())")->fetch_assoc()['total'];
 $donatur_bulan = $conn->query("SELECT COUNT(*) as c FROM users WHERE role='donatur' AND MONTH(created_at)=MONTH(NOW()) AND YEAR(created_at)=YEAR(NOW())")->fetch_assoc()['c'];
 
 // ── AKTIVITAS TERBARU ──────────────────────────────────────────────────────
