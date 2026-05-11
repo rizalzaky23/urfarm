@@ -224,7 +224,8 @@ body {
         box-shadow: none; 
         border: none; 
         padding: 0 0 0 14px; 
-        display: block; }
+        display: none; }
+    .nav-links.mobile-open .dropdown.open > .dropdown-menu { display: block; }
     .highlight-card { grid-template-columns: 1fr; }
     .highlight-img { height: 240px; }
     .artikel-grid { grid-template-columns: 1fr 1fr; }

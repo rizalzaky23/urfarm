@@ -190,8 +190,9 @@ body {
     .nav-links.mobile-open { display: flex; }
     .nav-links.mobile-open .dropdown-menu { 
         position: static; box-shadow: none; border: none; 
-        padding: 0 0 0 14px; display: block; 
+        padding: 0 0 0 14px; display: none; 
     }
+    .nav-links.mobile-open .dropdown.open > .dropdown-menu { display: block; }
     .detail-content {
         padding: 30px 24px;
     }

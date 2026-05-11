@@ -262,9 +262,10 @@ nav.scrolled { box-shadow: 0 4px 24px rgba(26,74,53,0.10); }
         box-shadow: none;
         border: none;
         padding: 0 0 0 14px;
-        display: block;
+        display: none;
 
     }
+    .nav-links.mobile-open .dropdown.open > .dropdown-menu { display: block; }
 
     .faq-title-badge {
 

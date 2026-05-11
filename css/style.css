@@ -475,11 +475,12 @@ footer {
         box-shadow: none;
         border: none;
         padding: 0 0 0 14px;
-        display: block;
+        display: none;
         width: 100%;
         min-width: unset;
         border-radius: 0;
     }
+    .nav-links.mobile-open .dropdown.open > .dropdown-menu { display: block; }
     .menu-toggle { display: block; }
     .hero-content { padding: 60px 24px 80px; }
     .stats-grid { grid-template-columns: 1fr; }

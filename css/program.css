@@ -342,11 +342,12 @@ nav.scrolled { box-shadow: 0 4px 24px rgba(26,74,53,0.10); }
         box-shadow: none;
         border: none;
         padding: 0 0 0 14px;
-        display: block;
+        display: none;
         width: 100%;
         min-width: unset;
         border-radius: 0;
     }
+    .nav-links.mobile-open .dropdown.open > .dropdown-menu { display: block; }
     /* --- Mobile Program Content --- */
     .program-inner {
         flex-direction: column;

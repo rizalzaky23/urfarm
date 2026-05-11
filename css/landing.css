@@ -620,9 +620,10 @@ footer {
     }
     .nav-links.mobile-open .dropdown-menu {
         position: static; box-shadow: none; border: none;
-        padding: 0 0 0 14px; display: block; border-top: none;
+        padding: 0 0 0 14px; display: none; border-top: none;
         animation: none;
     }
+    .nav-links.mobile-open .dropdown.open > .dropdown-menu { display: block; }
     .menu-toggle { display: block; }
 
     .about-container { grid-template-columns: 1fr; gap: 36px; }

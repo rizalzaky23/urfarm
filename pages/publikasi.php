@@ -147,6 +147,19 @@ $highlight = !empty($publikasi) ? array_shift($publikasi) : null;
         document.getElementById('menuToggle').addEventListener('click', () => {
             document.getElementById('navLinks').classList.toggle('mobile-open');
         });
+    // Mobile dropdown toggle
+    document.querySelectorAll('.nav-links .dropdown > a').forEach(function(trigger) {
+        trigger.addEventListener('click', function(e) {
+            if (window.innerWidth <= 900) {
+                e.preventDefault();
+                var dropdown = this.parentElement;
+                document.querySelectorAll('.nav-links .dropdown.open').forEach(function(d) {
+                    if (d !== dropdown) d.classList.remove('open');
+                });
+                dropdown.classList.toggle('open');
+            }
+        });
+    });
     </script>
 
 </body>
