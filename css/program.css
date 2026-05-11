@@ -318,6 +318,36 @@ nav.scrolled { box-shadow: 0 4px 24px rgba(26,74,53,0.10); }
 }
 
 @media (max-width: 900px) {
+    /* --- Mobile Navbar --- */
+    nav { padding: 0 24px; }
+    .menu-toggle { display: block; }
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: 64px; left: 0; right: 0;
+        background: #fff;
+        padding: 16px 24px 20px;
+        box-shadow: 0 8px 24px rgba(26,74,53,0.12);
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+        z-index: 999;
+        width: 100%;
+        overflow: hidden;
+    }
+    .nav-links.mobile-open { display: flex; }
+    .nav-links.mobile-open .dropdown { width: 100%; }
+    .nav-links.mobile-open .dropdown-menu {
+        position: static;
+        box-shadow: none;
+        border: none;
+        padding: 0 0 0 14px;
+        display: block;
+        width: 100%;
+        min-width: unset;
+        border-radius: 0;
+    }
+    /* --- Mobile Program Content --- */
     .program-inner {
         flex-direction: column;
     }

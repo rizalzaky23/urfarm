@@ -121,5 +121,15 @@ $page = $_GET['page'] ?? 'home';
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Mobile menu toggle
+    document.getElementById('menuToggle').addEventListener('click', function () {
+        document.getElementById('navLinks').classList.toggle('mobile-open');
+    });
+    // Navbar scroll shadow
+    window.addEventListener('scroll', function () {
+        document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 10);
+    });
+</script>
 </body>
 </html>

@@ -192,6 +192,17 @@ nav.scrolled { box-shadow: 0 4px 24px rgba(26,74,53,0.10); }
         flex-direction: column; align-items: flex-start; gap: 4px;
     }
     .nav-links.mobile-open { display: flex; }
+    .nav-links.mobile-open .dropdown { width: 100%; }
+    .nav-links.mobile-open .dropdown-menu {
+        position: static;
+        box-shadow: none;
+        border: none;
+        padding: 0 0 0 14px;
+        display: block;
+        width: 100%;
+        min-width: unset;
+        border-radius: 0;
+    }
     .partner-grid { grid-template-columns: repeat(2, 1fr); }
 }
 

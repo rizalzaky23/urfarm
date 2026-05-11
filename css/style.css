@@ -465,8 +465,20 @@ footer {
     .nav-links.mobile-open {
         display: flex; flex-direction: column;
         position: absolute; top: 64px; left: 0; right: 0;
-        background: white; padding: 16px 24px;
+        background: white; padding: 16px 24px 20px;
         box-shadow: 0 4px 24px rgba(26,74,53,0.10); align-items: flex-start;
+        width: 100%; overflow: hidden;
+    }
+    .nav-links.mobile-open .dropdown { width: 100%; }
+    .nav-links.mobile-open .dropdown-menu {
+        position: static;
+        box-shadow: none;
+        border: none;
+        padding: 0 0 0 14px;
+        display: block;
+        width: 100%;
+        min-width: unset;
+        border-radius: 0;
     }
     .menu-toggle { display: block; }
     .hero-content { padding: 60px 24px 80px; }
