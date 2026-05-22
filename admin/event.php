@@ -58,7 +58,7 @@ $event_list = $conn->query("
 
 $total_event   = $conn->query("SELECT COUNT(*) as c FROM event")->fetch_assoc()['c'];
 $total_bibit_e = $conn->query("SELECT COALESCE(SUM(jumlah_bibit),0) as c FROM penanaman")->fetch_assoc()['c'];
-$total_kontak  = $conn->query("SELECT COUNT(*) as c FROM contact")->fetch_assoc()['c'];
+$total_kontak  = $conn->query("SELECT COUNT(*) as c FROM contact WHERE pengirim='user' AND is_read=0")->fetch_assoc()['c'];
 
 function statusEvent($tgl_mulai, $tgl_selesai) {
     if (!$tgl_mulai) return ['Belum Mulai', 'gray'];

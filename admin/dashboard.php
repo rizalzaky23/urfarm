@@ -15,7 +15,8 @@ $total_bibit = $conn->query("SELECT COALESCE(SUM(jumlah_bibit),0) as c FROM pena
 $total_event = $conn->query("SELECT COUNT(*) as c FROM event")->fetch_assoc()['c'];
 $total_pub = $conn->query("SELECT COUNT(*) as c FROM publikasi")->fetch_assoc()['c'];
 $total_lokasi = $conn->query("SELECT COUNT(*) as c FROM titik_lokasi")->fetch_assoc()['c'];
-$total_kontak = $conn->query("SELECT COUNT(*) as c FROM contact")->fetch_assoc()['c'];
+$total_kontak = $conn->query("SELECT COUNT(*) as c FROM contact WHERE pengirim='user' AND is_read=0")->fetch_assoc()['c'];
+$total_pesan_masuk = $conn->query("SELECT COUNT(*) as c FROM contact WHERE pengirim='user'")->fetch_assoc()['c'];
 $total_kode = $conn->query("SELECT COUNT(*) as c FROM kode_titik")->fetch_assoc()['c'];
 
 // Donasi bulan ini
@@ -32,8 +33,8 @@ while ($row = $r->fetch_assoc())
 $r = $conn->query("SELECT 'publikasi' as type, judul as nama, 0 as val, tanggal_publikasi as created_at FROM publikasi ORDER BY tanggal_publikasi DESC LIMIT 2");
 while ($row = $r->fetch_assoc())
     $activities[] = $row;
-// Kontak terbaru
-$r = $conn->query("SELECT 'kontak' as type, u.nama as nama, 0 as val, c.id_contact as created_at FROM contact c LEFT JOIN users u ON c.id_users=u.id LIMIT 2");
+// Kontak terbaru (pesan dari user)
+$r = $conn->query("SELECT 'kontak' as type, u.nama as nama, c.is_read as val, c.id_contact as created_at FROM contact c LEFT JOIN users u ON c.id_users=u.id WHERE c.pengirim='user' ORDER BY c.id_contact DESC LIMIT 2");
 while ($row = $r->fetch_assoc())
     $activities[] = $row;
 usort($activities, fn($a, $b) => strtotime($b['created_at']) - strtotime($a['created_at']));
@@ -177,8 +178,11 @@ function timeAgo($dt)
                 <div class="stat-card">
                     <div class="stat-icon yellow"><i class="bi bi-envelope-fill"></i></div>
                     <div class="stat-body">
-                        <div class="stat-value"><?= $total_kontak ?></div>
+                        <div class="stat-value"><?= $total_pesan_masuk ?></div>
                         <div class="stat-label">Pesan Masuk</div>
+                        <?php if ($total_kontak > 0): ?>
+                            <div class="stat-sub red"><?= $total_kontak ?> belum dibaca</div>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -200,7 +204,9 @@ function timeAgo($dt)
                             } elseif ($type === 'publikasi') {
                                 $text = "Publikasi <strong>\"" . htmlspecialchars(substr($act['nama'], 0, 40)) . "\"</strong> diterbitkan";
                             } else {
-                                $text = "Pesan masuk dari <strong>" . htmlspecialchars($act['nama']) . "</strong> — belum dibaca";
+                                $readLabel = $act['val'] ? 'sudah dibaca' : 'belum dibaca';
+                                $text = "Pesan masuk dari <strong>" . htmlspecialchars($act['nama']) . "</strong> — " . $readLabel;
+                                if (!$act['val']) $dotClass = 'kontak unread';
                             }
                             ?>
                             <div class="activity-item">

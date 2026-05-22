@@ -91,7 +91,7 @@ if ($active_uid) {
     }
 }
 
-$total_kontak = count($user_list);
+$total_kontak = $conn->query("SELECT COUNT(*) as c FROM contact WHERE pengirim='user' AND is_read=0")->fetch_assoc()['c'];
 
 $avatar_colors = ['#D4A84B','#2B7FEB','#40916C','#E63946','#7B1FA2','#1B4332','#388E3C','#0288D1','#F57C00','#C2185B'];
 
@@ -156,7 +156,7 @@ function getColor($name, $colors) {
                     $color = getColor($user['nama'], $avatar_colors);
                     $preview = mb_substr($user['pesan'], 0, 60) . (mb_strlen($user['pesan']) > 60 ? '...' : '');
                     $is_active = $active_uid === (int)$user['user_id'];
-                    $unread = $user['unread_count'];
+                    $unread = $is_active ? 0 : $user['unread_count'];
                 ?>
                 <a href="?<?= $search ? 'q='.urlencode($search).'&' : '' ?>uid=<?= $user['user_id'] ?>"
                    class="inbox-item <?= $is_active ? 'active' : '' ?>">

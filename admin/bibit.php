@@ -49,7 +49,7 @@ $bibit_list = $conn->query("SELECT b.*, COALESCE(SUM(p.jumlah_bibit),0) as total
 
 $total_bibit_jenis = $conn->query("SELECT COUNT(*) as c FROM bibit")->fetch_assoc()['c'];
 $total_bibit_tanam = $conn->query("SELECT COALESCE(SUM(jumlah_bibit),0) as c FROM penanaman")->fetch_assoc()['c'];
-$total_kontak      = $conn->query("SELECT COUNT(*) as c FROM contact")->fetch_assoc()['c'];
+$total_kontak      = $conn->query("SELECT COUNT(*) as c FROM contact WHERE pengirim='user' AND is_read=0")->fetch_assoc()['c'];
 ?>
 <!DOCTYPE html>
 <html lang="id">
