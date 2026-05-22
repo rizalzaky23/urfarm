@@ -81,7 +81,6 @@ body {
     display: flex;
     flex-direction: column;
     box-shadow: 0 12px 48px rgba(26,74,53,0.04);
-    overflow: hidden;
     min-height: 520px;
     height: fit-content;
 }
@@ -167,6 +166,8 @@ body {
     padding: 14px 20px;
     border-top: 1px solid #e4ebe7;
     background: #fafcfb;
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
 }
 
 .chat-send-bar textarea {
