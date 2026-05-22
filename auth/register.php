@@ -97,6 +97,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="auth-footer-link">
                 Sudah punya akun? <a href="login.php">Masuk di sini</a>
             </div>
+
+            <div class="auth-footer-link" style="margin-top: 15px;">
+                <a href="../index.php" style="color: #6B7B72; text-decoration: none;">&larr; Kembali ke Beranda</a>
+            </div>
         </div>
 
         </div>

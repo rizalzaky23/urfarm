@@ -47,7 +47,7 @@ $page = $_GET['page'] ?? 'home';
             </div>
             <?php if (isset($_SESSION['user_id'])): ?>
                 <div class="dropdown">
-                    <a href="#"><i class="bi bi-person-circle"></i> <?= htmlspecialchars($_SESSION['user_nama']) ?> ▾</a>
+                    <a href="#">👤 <?= htmlspecialchars($_SESSION['user_nama']) ?> ▾</a>
                     <div class="dropdown-menu">
                         <?php if ($_SESSION['user_role'] === 'admin'): ?>
                         <a href="/project-urfarm/admin/dashboard.php">Dashboard</a>
