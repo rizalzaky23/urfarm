@@ -7,7 +7,7 @@ body {
     padding: 140px 48px 80px;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .contact-container {
@@ -82,7 +82,8 @@ body {
     flex-direction: column;
     box-shadow: 0 12px 48px rgba(26,74,53,0.04);
     overflow: hidden;
-    max-height: 520px;
+    min-height: 520px;
+    height: fit-content;
 }
 
 .contact-form-card .badge-title {
@@ -97,6 +98,7 @@ body {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    max-height: 420px;
 }
 
 .chat-thread::-webkit-scrollbar { width: 4px; }
@@ -235,6 +237,10 @@ body {
         width: 100%;
     }
     .contact-form-card {
-        max-height: 450px;
+        min-height: 450px;
+        height: fit-content;
+    }
+    .chat-thread {
+        max-height: 350px;
     }
 }
